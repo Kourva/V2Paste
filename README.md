@@ -6,7 +6,7 @@
 <br>
 
 # Setup
-###### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
+#### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
 + clone
 ```bash
 git clone https://github.com/Kourva/V2Paste && cd V2Paste
