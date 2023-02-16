@@ -19,7 +19,12 @@ pip install -r requirements.txt
 python main.py
 ```
 
-# Kivy to APK
+<p>
+    <img align="left" src="https://user-images.githubusercontent.com/118578799/219371927-2ebe765b-cdef-4b61-94d5-abd2b63d56f9.png" width=140 height=140 />
+    <h1> Kivy to APK </h1>
+    <p><b> Convert your Kivy file into apk <b></p>
+</p><br>
+
 ###### You have 2 ways to do this. first way is [Google Colab](https://colab.research.google.com/). you can convert your Kivy file into APK fast and easy.
 ###### Second way is manual way. you need to do following stuff step by step
 + install required python libraries
@@ -76,6 +81,10 @@ sudo apt-get install -y \
 ```bash
 sudo apt-get install libffi-dev
 ```
++ init buildozer file (If you don't have **buildozer.spec** file)
+```bash
+buildozer init
+```
 + build the app
 ```bash
 buildozer -v android debug
@@ -84,3 +93,15 @@ buildozer -v android debug
 ```bash
 buildozer android clean
 ```
+
+<p>
+    <img align="left" src="https://i0.wp.com/img.aapks.com/imgs/c/9/5/c95d7d8f2388afd94a20fd5004105246_icon.png?w=180" width=140 height=140 />
+    <h1> V2rayDoprax </h1>
+    <p><b> V2ray Vless tool to create thousands of vless proxies at ones! and more tools... for Doprax</b></p>
+</p><br>
+
+###### There is another tool for creating Vless proxies and some other stuff.
+###### Check it out: https://github.com/Kourva/V2rayDoprax
+
+# Thanks
+###### You can give me a star if you find this tool helpfull
