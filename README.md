@@ -12,7 +12,7 @@ git clone https://github.com/Kourva/V2Paste && cd V2Paste
 ```
 + requirements
 ```bash
-pip install -r requirements.txt
+pip install -r Lib/requirements.txt
 ```
 + run
 ```bash
