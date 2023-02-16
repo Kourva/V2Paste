@@ -81,7 +81,7 @@ sudo apt-get install -y \
 ```bash
 sudo apt-get install libffi-dev
 ```
-+ init buildozer file (If you don't have **buildozer.spec** file)
++ init buildozer file (If you don't have **buildozer.spec** file. otherwise skip this step)
 ```bash
 buildozer init
 ```
