@@ -1,0 +1,99 @@
+# Help menu stuff
+<HelpMenuScreen>
+
+
+    # App background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: root.background
+
+
+    # Screen float layout
+    FloatLayout:
+
+        # ID 
+        id: floatlayout
+
+        # App action bar
+        ActionBar:
+
+            # Size & Position
+            pos_hint: {'top':1}
+            height: 55
+
+            # Style
+            background_color: '#aaaaaa'
+
+            # Action View
+            ActionView:
+
+                # Separator
+                use_separator: False
+
+                # Action Previous
+                ActionPrevious:
+                    halign: 'right'
+                    title: f'[b][font={root.Cyberverse}][/b]'
+                    with_previous: False
+                    markup: True
+                    app_icon: "Sources/Assets/back.png"
+
+                    on_press:
+                        root.manager.transition = FadeTransition(duration=0.2)
+                        root.manager.current = 'MainMenu'
+
+                # Action overflow
+                ActionOverflow:
+                    overflow_image: "Sources/Assets/3dot.png"
+
+                    # Exit button
+                    ActionButton:
+                        markup: True
+                        font_name: root.Cyberverse
+                        text: '[color=#ffffff]x[/color] Exit'
+                        background_color: "#aaaaaa"
+                        color: "#2fa7d4"
+
+                        # Action
+                        on_press:
+                            sys.exit()
+        
+        # Github label
+        Label:
+
+            # Size & Position
+            size_hint: 0.5, 0.1
+            pos_hint: {"center_x": 0.5, "center_y":0.8}
+            
+            # Style
+            markup: True
+            font_name: root.Cyberverse
+            color: "#ffffff"
+            halign: "center"
+            text: "[b][color=#ffffff][Github Page][/color]\n\n[color=#2fa7d4]github.com/Kourva/V2paste[/color][/b]"
+
+
+        # Image
+        Image:
+
+            # Size & Position
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            source: "Sources/Assets/icon.png"
+            
+            # Style
+            mipmap: True
+            keep_ratio: True
+
+
+        # V2Paste label
+        Label:
+            size_hint: 0.5, 0.1
+            pos_hint: {"center_x": 0.5, "bottom":1}
+            markup: True
+            font_name: root.Cyberverse
+            color: "#ffffff"
+            text: "[b]V2[color=#2fa7d4]Paste[/color][/b]"
+
+# EOF
