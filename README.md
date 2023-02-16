@@ -22,7 +22,7 @@ python main.py
 <p>
     <img align="left" src="https://user-images.githubusercontent.com/118578799/219371927-2ebe765b-cdef-4b61-94d5-abd2b63d56f9.png" width=140 height=140 />
     <h1> Kivy to APK </h1>
-    <p><b> Convert your Kivy file into apk <b></p>
+    <p><b> Convert your Kivy file into apk </b></p>
 </p><br>
 
 ###### You have 2 ways to do this. first way is [Google Colab](https://colab.research.google.com/). you can convert your Kivy file into APK fast and easy.
@@ -104,4 +104,4 @@ buildozer android clean
 ###### Check it out: https://github.com/Kourva/V2rayDoprax
 
 # Thanks
-###### You can give me a star if you find this tool helpfull
+###### You can give me a star if you find this tool helpfull. Wishing you all the best.
