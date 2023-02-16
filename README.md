@@ -19,6 +19,30 @@ pip install -r requirements.txt
 python main.py
 ```
 
+# Usage
+###### So there are **Five** Input boxes. None of them can be empty!
+###### For more help, go to [V2rayDoprax](https://github.com/Kourva/V2rayDoprax) repository.
++ **CloudFlare**: Your worker url from [CloudFlare](https://cloudflare.com) with **https://** and **/** at the end.
+```bash
+https://xxx.yyy.workers.dev/
+```
++ **Doprax**: Your app url from [Doprax](https://www.doprax.com/) without **https://** and **/** at the end.
+```bash
+xxx.eu-yyy.dopraxrocks.net
+```
++ **Alias**: Choose a name for your proxy.
+```bash
+Proxy Number10
+```
++ **UUID**: Your UUID here. Don't have? [generate](https://getafreenode.com/) one.
+```bash
+xxxxxxxx-yyyy-yyyy-yyyy-xxxxxxxxxxxx
+```
++ **Adress**: Your address and port. Don't have? [get](http://bot.sudoer.net/result.cf) one.
+```bash
+255.255.255.255:443
+```
+
 <p>
     <img align="left" src="https://user-images.githubusercontent.com/118578799/219371927-2ebe765b-cdef-4b61-94d5-abd2b63d56f9.png" width=140 height=140 />
     <h1> Kivy to APK </h1>
@@ -102,6 +126,11 @@ buildozer android clean
 
 ###### There is another tool for creating Vless proxies and some other stuff.
 ###### Check it out: https://github.com/Kourva/V2rayDoprax
+
+# Download 
+###### Feel free to download this app from releases page
+###### download: [V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk](https://github.com/Kourva/V2Paste/releases/download/v1/V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk)
+
 
 # Thanks
 ###### You can give me a star if you find this tool helpfull. Wishing you all the best.
