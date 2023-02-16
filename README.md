@@ -23,9 +23,9 @@ python main.py
 # Usage
 ###### So there are **Five** Input boxes. None of them can be empty!
 ###### For more help, go to [V2rayDoprax](https://github.com/Kourva/V2rayDoprax) repository.
-+ **CloudFlare**: Your worker url from [CloudFlare](https://cloudflare.com) with **https://** and **/** at the end.
++ **CloudFlare**: Your worker url from [CloudFlare](https://cloudflare.com) without **https://** and **/** at the end.
 ```bash
-https://xxx.yyy.workers.dev/
+xxx.yyy.workers.dev
 ```
 + **Doprax**: Your app url from [Doprax](https://www.doprax.com/) without **https://** and **/** at the end.
 ```bash
