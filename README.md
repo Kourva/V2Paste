@@ -130,7 +130,7 @@ buildozer android clean
 
 # Download 
 ###### Feel free to download this app from releases page
-###### download: [V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk](https://github.com/Kourva/V2Paste/releases/download/v1/V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk)
+###### Download: [V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk](https://github.com/Kourva/V2Paste/releases/download/v1/V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk)
 
 
 # Thanks
