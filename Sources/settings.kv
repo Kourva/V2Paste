@@ -1,0 +1,206 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+# Hidden action previous button color when pressed
+<ActionPreviousButton>:
+    background_down: ""
+    background_color: '#00000000'
+
+# Settings stuff
+<SettingsScreen>
+
+    # App background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: root.background
+
+    # Screen float layout
+    FloatLayout:
+
+        # ID 
+        id: floatlayout
+
+        # App action bar
+        ActionBar:
+
+            # Size & Position
+            pos_hint: {'top':1}
+            size_hint: (1, None)
+            height: 60
+
+            # Style
+            background_image: root.background
+
+            # Action View
+            ActionView:
+
+                # Separator
+                use_separator: True
+
+                # Action Previous
+                ActionPrevious:
+                    title: f"[b][color=#000000][font={root.font}]Settings[/font][/color][/b]"
+                    with_previous: False
+                    markup: True
+                    app_icon: ''
+                    app_icon_width: 0
+                    app_icon_height: 0
+
+                # Action overflow
+                ActionOverflow:
+                    
+                # Help button
+                ActionButton:
+                    icon: "Sources/Assets/help96.png"
+                    important: True
+                    background_color: "00000022"
+
+                    # Action
+                    on_press:
+                        root.notify_next_update()
+                        # root.manager.transition = FadeTransition(duration=0.05)
+                        # root.manager.current = 'HelpMenu'
+
+                # Back button
+                ActionButton:
+                    icon: "Sources/Assets/back96.png"
+                    important: True
+                    background_color: "00000022"
+
+                    # Action
+                    on_press:
+                        root.save_config(CloudFlare, IP_address, Port, UUID, Remark, Path)
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'MainMenu'
+
+        # Grid layout
+        GridLayout:
+
+            # Size & Position
+            cols: 1
+            row_force_default: True
+            row_default_height: "40dp"
+            size_hint: (0.7, 0.7)
+            halign: "left"
+            pos_hint: {"center_x": 0.5, "center_y":0.5}
+            background_color: "000000"
+
+            # Proxy config label
+            Label:
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b]Proxy Config[/b]"
+                color: "000000"
+
+            # CloudFlare worker input
+            TextInput:
+
+                # ID
+                id: CloudFlare
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter CloudFlare Worker URL"
+                text: ""
+
+            # IP address input
+            TextInput:
+                
+                # ID
+                id: IP_address
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+                
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter IP address"
+                text: ""
+            
+            # Port number input
+            TextInput:
+                
+                # ID
+                id: Port
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+                
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter Port number"
+                text: ""
+            
+            # UUID input
+            TextInput:
+                
+                # ID
+                id: UUID
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+                
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter UUID"
+                text: ""
+            
+            # Remark input
+            TextInput:
+                
+                # ID
+                id: Remark
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+                
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter Proxy Remarks"
+                text: ""
+            
+            # Path input
+            TextInput:
+                
+                # ID
+                id: Path
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+                
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter Proxy Path"
+                text: ""
+            
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Reset label
+            Label:
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b][ref=Reset][color=#ff0000]Reset[/color][/ref] to default[/b]"
+                color: "000000"
+                
+                # Action
+                on_ref_press:
+                    root.reset_settings(CloudFlare, IP_address, Port, UUID, Remark, Path)
+            
+# EOF
