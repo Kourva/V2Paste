@@ -5,6 +5,21 @@
 </p>
 <br>
 
+# Version
+#### V1.1 pre-release
++ New light theme
++ Multi screen
++ Notinifcation
++ Vibrate
++ Help menu **(updating)**
++ Script menu **(updating)**
++ Bug fixed
++ Doprax input deleted
+
+# Download 
+###### Feel free to download this app from releases page
+###### Download: [V2Paste-1.1](https://github.com/Kourva/V2Paste/releases/download/v1.1)
+
 # Setup
 #### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
 + clone
@@ -27,21 +42,25 @@ python main.py
 ```bash
 xxx.yyy.workers.dev
 ```
-+ **Doprax**: Your app url from [Doprax](https://www.doprax.com/) without **https://** and **/** at the end.
++ **IP Adress**: Your IP address . Don't have? [get](http://bot.sudoer.net/result.cf) one.
 ```bash
-xxx.eu-yyy.dopraxrocks.net
+255.255.255.255
 ```
-+ **Alias**: Choose a name for your proxy.
++ **Port**: Your port number . Don't have? [get](http://bot.sudoer.net/result.cf) one.
 ```bash
-Proxy Number10
+443
 ```
 + **UUID**: Your UUID here. Don't have? [generate](https://getafreenode.com/) one.
 ```bash
 xxxxxxxx-yyyy-yyyy-yyyy-xxxxxxxxxxxx
 ```
-+ **Adress**: Your address and port. Don't have? [get](http://bot.sudoer.net/result.cf) one.
++ **Remark**: Choose a name for your proxy **without space**. 
 ```bash
-255.255.255.255:443
+ProxyNumber10
+```
++ **Path**: your proxy path
+```bash
+vless
 ```
 
 <p>
@@ -127,10 +146,6 @@ buildozer android clean
 
 ###### There is another tool for creating Vless proxies and some other stuff.
 ###### Check it out: https://github.com/Kourva/V2rayDoprax
-
-# Download 
-###### Feel free to download this app from releases page
-###### Download: [V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk](https://github.com/Kourva/V2Paste/releases/download/v1/V2Paste-1.0-arm64-v8a_armeabi-v7a-debug.apk)
 
 
 # Thanks
