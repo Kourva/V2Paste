@@ -18,7 +18,7 @@
 
 # Download 
 ###### Feel free to download this app from releases page
-###### Download: [V2Paste-1.1](https://github.com/Kourva/V2Paste/releases/download/v1.1)
+###### Download: [V2Paste-1.1](https://github.com/Kourva/V2Paste/releases/tag/v1.1)
 
 # Setup
 #### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
