@@ -1,11 +1,13 @@
 #: import FadeTransition kivy.uix.screenmanager.FadeTransition
 #: import SlideTransition kivy.uix.screenmanager.SlideTransition
 
+# Hidden action previous button color when pressed
+<ActionPreviousButton>:
+    background_down: ""
+    background_color: '#00000000'
 
-
-# Menu stuff
+# Main menu stuff
 <MainMenuScreen>
-
 
     # App background
     canvas.before:
@@ -13,7 +15,6 @@
             pos: self.pos
             size: self.size
             source: root.background
-
 
     # Screen float layout
     FloatLayout:
@@ -26,10 +27,11 @@
 
             # Size & Position
             pos_hint: {'top':1}
-            height: 55
+            size_hint: (1, None)
+            height: 60
 
             # Style
-            background_color: '#aaaaaa'
+            background_image: "Sources/Assets/white.jpg"
 
             # Action View
             ActionView:
@@ -39,252 +41,179 @@
 
                 # Action Previous
                 ActionPrevious:
-                    halign: 'right'
-                    title: f'[b][font={root.Cyberverse}][color=#ffffff]V2[/color][color=#2fa7d4]Paste[/font][/color][/b]'
+                    title: f"[b][color=#000000][font={root.font}]V2Paste[/font][/color][/b]"
                     with_previous: False
                     markup: True
-                    app_icon: "Sources/Assets/vicon.png"
+                    app_icon: ''
+                    app_icon_width: 0
+                    app_icon_height: 0
 
                 # Action overflow
                 ActionOverflow:
-                    overflow_image: "Sources/Assets/3dot.png"
 
-                    # Help button
-                    ActionButton:
-                        markup: True
-                        font_name: root.Cyberverse
-                        text: '[color=#ffffff]?[/color] Help'
-                        background_color: "#aaaaaa"
-                        color: "#2fa7d4"
-                        
-                        # Action
-                        on_press:
-                            root.manager.transition = FadeTransition(duration=0.2)
-                            root.manager.current = 'HelpMenu'
+                # Script button
+                ActionButton:
+                    icon: "Sources/Assets/code96.png"
+                    important: True
+                    background_color: "00000022"
+                    text: "Script"
 
-                    # Exit button
-                    ActionButton:
-                        markup: True
-                        font_name: root.Cyberverse
-                        text: '[color=#ffffff]x[/color] Exit'
-                        background_color: "#aaaaaa"
-                        color: "#2fa7d4"
+                    # Action
+                    on_press:
+                        root.notify_next_update()
+                    
+                # Settings button
+                ActionButton:
+                    icon: "Sources/Assets/settings96.png"
+                    important: True
+                    background_color: "00000022"
+                    text: "Settings"
 
-                        # Action
-                        on_press:
-                            sys.exit()
+                    # Action
+                    on_press:
+                        root.load_config()
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'Settings'
 
+                # Exit button
+                ActionButton:
+                    icon: "Sources/Assets/close96.png"
+                    important: True
+                    background_color: "00000022"
+                    text: "Exit"
 
-        # CloudFlare label
-        Label:
+                    # Action
+                    on_press:
+                        root.exit_app()
 
-            # Size & Position
-            size_hint: (0.9, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y":0.85}
+        # Grid layout
+        GridLayout:
 
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            color: "#ff5500"
+            # Size & Positions
+            cols: 1
+            row_force_default: True
+            row_default_height: "40dp"
+            size_hint: (0.7, 0.7)
             halign: "left"
-            text: "[b]CloudFlare[/b]"
-        
+            pos_hint: {"center_x": 0.5, "center_y":0.5}
+            background_color: "000000"
 
-        # CloudFlare input
-        TextInput:
+            # Generate button label
+            Label:
 
-            # ID
-            id: worker
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b]Generate new vless proxy[/b]"
+                color: "000000"    
 
-            # Size & Position
-            size_hint: (0.9, None)
-            height: "35dp"
-            pos_hint: {"center_x": 0.5, "center_y":0.8}
-            markup: True
-            font_name: "RobotoMono-Regular"
-            multiline: False
-            background_color: "616161"
-            foreground_color: "ff5500"
-            hint_text: "xxx.yyy.workers.dev"
+            # Generate button
+            Button:
 
+                # Size & Position
+                size_hint: (0.4, 0.1)
 
-        # Doprax label
-        Label:
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Generate"
+                background_color: "#000000ee"
 
-            # Size & Position
-            size_hint: (0.9, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y":0.725}
+                # Action
+                on_press:
+                    root.generate(output)
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Output box
+            TextInput:
+
+                # ID
+                id: output
+
+                # Size & Position
+                size_hint: (0.4, None)
+                height: "100dp"
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: ""
+                hint_text: "Output of created proxy..."
+                background_color: "#eeeeee22"
             
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            color: "#2fa7d4"
-            halign: "left"
-            text: "[b]Doprax[/b]"
+            # Copy button
+            Button:
 
+                # ID
+                id: copybutton
 
-        # Doprax input
-        TextInput:
+                # Size & Position
+                size_hint: (0.4, 0.1)
 
-            # ID
-            id: doprax
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Copy to clipboard"
+                background_color: "#000000ee"
 
+                # Action
+                on_press:
+                    root.copy_output(output)
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Reset label
+            Label:
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b][ref=Clear][color=#ff0000]Clear[/color][/ref] the output[/b]"
+                color: "000000"
+
+                # Action
+                on_ref_press:
+                    root.reset_output(output)
+
+        # GitHub button
+        ImageButton:
+ 
             # Size & Position
-            size_hint: (0.9, None)
-            height: "35dp"
-            pos_hint: {"center_x": 0.5, "center_y":0.675}
-
+            size_hint: (0.1, 0.1)
+            pos_hint: {"bottom": 1, "center_x": 0.55}
+ 
             # Style
-            markup: True
-            font_name: "RobotoMono-Regular"
-            multiline: False
-            background_color: "616161"
-            foreground_color: "2fa7d4"
-            hint_text: "xxx.eu-yyy.dopraxrocks.net"
-
-
-        # Alias label
-        Label:
-
-            # Size & Position
-            size_hint: (0.9, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y":0.6}
-
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            color: "#dd0000"
-            halign: "left"
-            text: "[b]Alias[/b]"
-
-
-        # Alias input
-        TextInput:
-
-            # ID
-            id: alias
-
-            # Size & Position
-            size_hint: (0.9, None)
-            height: "35dp"
-            pos_hint: {"center_x": 0.5, "center_y":0.55}
-
-            # Style
-            markup: True
-            font_name: "RobotoMono-Regular"
-            multiline: False
-            background_color: "616161"
-            foreground_color: "dd0000"
-            hint_text: "V2Paste-feb12"
-
-
-
-        # UUID label
-        Label:
-
-            # Size & Position
-            size_hint: (0.9, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y":0.475}
-
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            color: "#55ff00"
-            halign: "left"
-            text: "[b]UUID[/b]"
-
-
-        # UUID input
-        TextInput:
-
-            # ID
-            id: uuid
-
-            # Size & Position
-            size_hint: (0.9, None)
-            height: "35dp"
-            pos_hint: {"center_x": 0.5, "center_y":0.425}
-
-            # Style
-            markup: True
-            font_name: "RobotoMono-Regular"
-            multiline: False
-            background_color: "616161"
-            foreground_color: "55ff00"
-            hint_text: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-
-
-        # Address label
-        Label:
-
-            # Size & Position
-            size_hint: (0.9, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y":0.35}
-
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            color: "#ffffff"
-            halign: "left"
-            text: "[b]Address[/b]"
-        
-
-        # Address input
-        TextInput:
-
-            # ID
-            id: address
-
-            # Size & Position
-            size_hint: (0.9, None)
-            height: "35dp"
-            pos_hint: {"center_x": 0.5, "center_y":0.3}
-            markup: True
-            font_name: "RobotoMono-Regular"
-            multiline: False
-            background_color: "616161"
-            foreground_color: "ffffff"
-            hint_text: "255.255.255.255:443"
-
-
-        # Output label
-        Label:
-
-            # ID
-            id: output
-
-            # Size & Position
-            size_hint: (0.9, 0.1)
-            pos_hint: {"center_x": 0.5, "center_y":0.175}
-
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            color: "#cccccc"
-            halign: "left"
-            text: "[b][/b]"
-        
-
-        # Generate button
-        Button:
-
-            # ID
-            id: generate
-
-            # Size & Position
-            size_hint: (1, None)
-            pos_hint: {'button':1}
-            height: "40dp"
-
-            # Style
-            markup: True
-            font_name: root.Cyberverse
-            text: "Generate Vless"
-            color: "#2fa7d4"
-            background_color: "#171717"
+            source: "Sources/Assets/github96.png"
 
             # Action
             on_press:
-                root.vless_generator(worker, doprax, uuid, alias, address, output)
+                root.open_github()
+
+        # Telegram button
+        ImageButton:
+ 
+            # Size & Position
+            size_hint: (0.1, 0.1)
+            pos_hint: {"bottom": 1, "center_x": 0.45}
+ 
+            # Style
+            source: "Sources/Assets/telegram96.png"
+
+            # Action
+            on_press:
+                root.open_telegram()
 
 # EOF
