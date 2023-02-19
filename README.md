@@ -6,15 +6,12 @@
 <br>
 
 # Version
-#### V1.1 pre-release
+#### V1.1
++ Vmess generator
 + New light theme
 + Multi screen
-+ Notinifcation
-+ Vibrate
 + Help menu **(updating)**
-+ Script menu **(updating)**
 + Bug fixed
-+ Doprax input deleted
 
 # Download 
 ###### Feel free to download this app from releases page
@@ -42,15 +39,15 @@ python main.py
 ```bash
 xxx.yyy.workers.dev
 ```
-+ **IP Adress**: Your IP address . Don't have? [get](http://bot.sudoer.net/result.cf) one.
++ **IP Adress**: Your IP address . Don't have? [get one](http://bot.sudoer.net/result.cf).
 ```bash
 255.255.255.255
 ```
-+ **Port**: Your port number . Don't have? [get](http://bot.sudoer.net/result.cf) one.
++ **Port**: Your port number.
 ```bash
 443
 ```
-+ **UUID**: Your UUID here. Don't have? [generate](https://getafreenode.com/) one.
++ **UUID**: Your UUID here. Don't have? [generate one](https://getafreenode.com/).
 ```bash
 xxxxxxxx-yyyy-yyyy-yyyy-xxxxxxxxxxxx
 ```
@@ -58,7 +55,11 @@ xxxxxxxx-yyyy-yyyy-yyyy-xxxxxxxxxxxx
 ```bash
 ProxyNumber10
 ```
-+ **Path**: your proxy path
++ **Path vmess**: your Vmess path
+```bash
+vmess
+```
++  **Path vless**: your Vless path
 ```bash
 vless
 ```
@@ -73,7 +74,7 @@ vless
 ###### Second way is manual way. you need to do following stuff step by step
 + install required python libraries
 ```bash
-pip install buildozer cython kivy pillow
+pip install buildozer cython kivy pillow plyer
 ```
 + install required developer packages
 ```bash
