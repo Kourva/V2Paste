@@ -59,9 +59,7 @@
 
                     # Action
                     on_press:
-                        root.notify_next_update()
-                        # root.manager.transition = FadeTransition(duration=0.05)
-                        # root.manager.current = 'HelpMenu'
+                        root.open_help()
 
                 # Back button
                 ActionButton:
@@ -71,7 +69,7 @@
 
                     # Action
                     on_press:
-                        root.save_config(CloudFlare, IP_address, Port, UUID, Remark, Path)
+                        root.save_config(CloudFlare, IP_address, Port, UUID, Remark, Pathvmess, Pathvless)
                         root.manager.transition = FadeTransition(duration=0.05)
                         root.manager.current = 'MainMenu'
 
@@ -105,6 +103,7 @@
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
+                multiline: False
 
                 # Style
                 background_color: "#eeeeee"
@@ -120,6 +119,7 @@
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
+                multiline: False
                 
                 # Style
                 background_color: "#eeeeee"
@@ -135,6 +135,7 @@
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
+                multiline: False
                 
                 # Style
                 background_color: "#eeeeee"
@@ -150,6 +151,7 @@
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
+                multiline: False
                 
                 # Style
                 background_color: "#eeeeee"
@@ -165,6 +167,7 @@
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
+                multiline: False
                 
                 # Style
                 background_color: "#eeeeee"
@@ -175,15 +178,33 @@
             TextInput:
                 
                 # ID
-                id: Path
+                id: Pathvmess
                 
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
+                multiline: False
                 
                 # Style
                 background_color: "#eeeeee"
-                hint_text: "Enter Proxy Path"
+                hint_text: "Enter Vmess Path"
+                text: ""
+
+            
+            # Path input
+            TextInput:
+                
+                # ID
+                id: Pathvless
+                
+                # Size & Positions
+                size_hint: (1, None)
+                height: "30dp"
+                multiline: False
+                
+                # Style
+                background_color: "#eeeeee"
+                hint_text: "Enter Vless Path"
                 text: ""
             
             # New line - Empty label
@@ -201,6 +222,23 @@
                 
                 # Action
                 on_ref_press:
-                    root.reset_settings(CloudFlare, IP_address, Port, UUID, Remark, Path)
-            
+                    root.reset_settings(CloudFlare, IP_address, Port, UUID, Remark, Pathvmess, Pathvless)
+
+
+        # V2Paste label
+        Label:
+
+            size_hint: {1, 0.1}
+            pos_hint: {"center_x":0.5, "center_y":0.05}
+
+            # Style
+            markup: True
+            font_name: root.font
+            text: "[b][ref=Reset]V2Paste[/color][/ref][/b]"
+            color: "000000"
+                
+            # Action
+            on_ref_press:
+                root.do_game()    
+
 # EOF
