@@ -1,7 +1,7 @@
 <p>
     <img align="left" src="https://user-images.githubusercontent.com/118578799/219364816-7bb81cac-2cb5-4e52-bbc7-9bf907d016b1.png" width=140 height=140 />
     <h1> V2Paste </h1>
-    <p><b> Create Vless proxies via given config with this simple app in Android </b></p>
+    <p><b> Create Vless/Vmess proxies via given config with this simple app in Android </b></p>
 </p>
 <br>
 
