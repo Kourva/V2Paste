@@ -4,17 +4,15 @@
 #  Author  : Kourva
 #  Github  : https://github.com/kourva/V2Paste
 #  Version : 1.1
-#  About   : Create Vless proxies via given config with this simple app
+#  About   : Create Vless/Vmess proxies via given config with this simple app
 #
 #  Changes:
-#          + new light UI
-#          + Fixed bugs
-#          + Multi screen
-#          + Notification
-
+#          + Vmess proxy added
+#          + Bug fixes
 
 # Imports
 import sys
+import base64
 import webbrowser
 
 from plyer import notification
@@ -64,7 +62,8 @@ class MainMenuScreen(Screen):
         port = self.manager.get_screen("Settings").ids.Port
         uuid = self.manager.get_screen("Settings").ids.UUID
         remark = self.manager.get_screen("Settings").ids.Remark
-        path = self.manager.get_screen("Settings").ids.Path
+        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess
+        pathvless = self.manager.get_screen("Settings").ids.Pathvless
 
         # Loads config file. if face any problem, resets it.
         with open("Data/config.conf", "r") as data:
@@ -75,7 +74,8 @@ class MainMenuScreen(Screen):
                 port._set_text(lines[2].split("\n")[0])
                 uuid._set_text(lines[3].split("\n")[0])
                 remark._set_text(lines[4].split("\n")[0])
-                path._set_text(lines[5].split("\n")[0])
+                pathvmess._set_text(lines[5].split("\n")[0])
+                pathvless._set_text(lines[6].split("\n")[0])
 
             except IndexError:
                 worker = ""
@@ -83,17 +83,19 @@ class MainMenuScreen(Screen):
                 port = ""
                 uuid = ""
                 remark = ""
-                path = ""
+                pathvmess = ""
+                pathvless = ""
 
-    # Vless generator
+    # Vless/Vmess generator
     def generate(self, output) -> None:
         # Uses get_screen to get IDs from another class
-        worker = self.manager.get_screen("Settings").ids.CloudFlare.text
-        address = self.manager.get_screen("Settings").ids.IP_address.text
-        port = self.manager.get_screen("Settings").ids.Port.text
-        uuid = self.manager.get_screen("Settings").ids.UUID.text
-        remark = self.manager.get_screen("Settings").ids.Remark.text
-        path = self.manager.get_screen("Settings").ids.Path.text
+        worker = self.manager.get_screen("Settings").ids.CloudFlare.text.strip()
+        address = self.manager.get_screen("Settings").ids.IP_address.text.strip()
+        port = self.manager.get_screen("Settings").ids.Port.text.strip()
+        uuid = self.manager.get_screen("Settings").ids.UUID.text.strip()
+        remark = self.manager.get_screen("Settings").ids.Remark.text.strip()
+        pathvless = self.manager.get_screen("Settings").ids.Pathvless.text.strip()
+        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess.text.strip()
 
         # Send error notification if any field is empty
         if (
@@ -102,8 +104,14 @@ class MainMenuScreen(Screen):
             or port == ""
             or uuid == ""
             or remark == ""
-            or path == ""
+            or pathvmess == ""
+            or pathvless == ""
         ):
+            try:
+                vibrator.vibrate(0.3)
+            except:
+                pass
+
             title = "Error"
             message = "Fill the requirements"
             ticker = "New message"
@@ -116,14 +124,34 @@ class MainMenuScreen(Screen):
             notification.notify(**kwargs)
 
         else:
-            vless_url = f"vless://{uuid}@{address}:{port}?encryption=none&security=tls&sni={worker}&alpn=http%2F1.1&type=ws&host={worker}&path=/{path}#{remark}"
-            output._set_text(vless_url)
+            # Vless
+            vless_url = f"vless://{uuid}@{address}:{port}?encryption=none&security=tls&sni={worker}&alpn=http%2F1.1&type=ws&host={worker}&path=/{pathvless}#{remark}"
 
-    # Copies the Vless proxy to Clipboard & send notification
+            # Vmess
+            vmess_url = {
+                "v": "2",
+                "ps": remark,
+                "add": address,
+                "port": port,
+                "id": uuid,
+                "aid": "0",
+                "scy": "auto",
+                "net": "ws",
+                "type": "none",
+                "host": worker,
+                "path": pathvmess,
+                "tls": "tls",
+                "alpn": "http/1.1",
+            }
+            message = str(vmess_url).encode("ascii")
+            base64_bytes = base64.b64encode(message).decode("ascii")
+            output._set_text("vmess://" + base64_bytes + "\n\n" + vless_url)
+
+    # Copies the Vless/Vmess proxies to Clipboard & send notification
     def copy_output(self, output):
         Clipboard.copy(output.text)
         title = "Copied"
-        message = "Proxy Copied"
+        message = "Proxies Copied"
         ticker = "New message"
         kwargs = {
             "title": title,
@@ -156,11 +184,27 @@ class MainMenuScreen(Screen):
 
     # Opens GitHub
     def open_github(self):
-        webbrowser.open("https://github.com/Kourva/V2Paste")
+        try:
+            vibrator.vibrate(0.1)
+        except:
+            pass
+        webbrowser.open("https://github.com/Kourva")
 
     # Opens Telegram
     def open_telegram(self):
+        try:
+            vibrator.vibrate(0.1)
+        except:
+            pass
         webbrowser.open("https://t.me/Kourva")
+
+    # Opens Source Code
+    def open_source(self):
+        try:
+            vibrator.vibrate(0.1)
+        except:
+            pass
+        webbrowser.open("https://github.com/Kourva/V2Paste")
 
 
 # Settings screen
@@ -191,7 +235,8 @@ class SettingsScreen(Screen):
 {args[2].text}
 {args[3].text}
 {args[4].text}
-{args[5].text}"""
+{args[5].text}
+{args[6].text}"""
                 )
 
                 # Sends notification
@@ -212,19 +257,44 @@ class SettingsScreen(Screen):
                 port = ""
                 uuid = ""
                 remark = ""
-                path = ""
+                pathvmess = ""
+                pathvless = ""
 
-    # Notify user to wait until the next update
-    def notify_next_update(self):
+    # Opens help page
+    def open_help(self):
         try:
-            vibrator.vibrate(0.3)
+            vibrator.vibrate(0.1)
+        except:
+            pass
+        # Sends notification
+        title = "Saved"
+        message = "Oops! Under development"
+        ticker = "New message"
+        kwargs = {
+            "title": title,
+            "message": message,
+            "ticker": ticker,
+            "toast": True,
+        }
+        notification.notify(**kwargs)
+
+    # Simple notification
+    def do_game(self):
+        try:
+            vibrator.vibrate(0.1)
         except:
             pass
 
-        title = "Developer"
-        message = "This option is under the development"
+        # Sends notification
+        title = "Saved"
+        message = "¯\_(ツ)_/¯"
         ticker = "New message"
-        kwargs = {"title": title, "message": message, "ticker": ticker, "toast": True}
+        kwargs = {
+            "title": title,
+            "message": message,
+            "ticker": ticker,
+            "toast": True,
+        }
         notification.notify(**kwargs)
 
 
