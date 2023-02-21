@@ -62,7 +62,7 @@ vmess
 ```bash
 vless
 ```
-#### Updatee: You can generate UUID, Path name and Get Ip adress and port!
+#### Update: You can generate UUID, Path name and Get Ip adress and port!
 
 <p>
     <img align="left" src="https://user-images.githubusercontent.com/118578799/219371927-2ebe765b-cdef-4b61-94d5-abd2b63d56f9.png" width=140 height=140 />
