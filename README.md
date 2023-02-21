@@ -6,16 +6,15 @@
 <br>
 
 # Version
-#### V1.1
-+ Vmess generator
-+ New light theme
-+ Multi screen
-+ Help menu **(updating)**
+#### V1.2
++ Generates 20 proxies at ones
++ Vmess decoder - URL to Json
++ UUID generator
 + Bug fixed
 
 # Download 
 ###### Feel free to download this app from releases page
-###### Download: [V2Paste-1.1](https://github.com/Kourva/V2Paste/releases/tag/v1.1)
+###### Download: [V2Paste-1.2](https://github.com/Kourva/V2Paste/releases/tag/v1.2)
 
 # Setup
 #### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
@@ -33,7 +32,7 @@ python main.py
 ```
 
 # Usage
-###### So there are **Five** Input boxes. None of them can be empty!
+###### So there are **Seven** Input boxes. None of them can be empty!
 ###### For more help, go to [V2rayDoprax](https://github.com/Kourva/V2rayDoprax) repository.
 + **CloudFlare**: Your worker url from [CloudFlare](https://cloudflare.com) without **https://** and **/** at the end.
 ```bash
@@ -63,6 +62,7 @@ vmess
 ```bash
 vless
 ```
+#### Updatee: You can generate UUID, Path name and Get Ip adress and port!
 
 <p>
     <img align="left" src="https://user-images.githubusercontent.com/118578799/219371927-2ebe765b-cdef-4b61-94d5-abd2b63d56f9.png" width=140 height=140 />
