@@ -142,7 +142,7 @@ buildozer android clean
 <p>
     <img align="left" src="https://i0.wp.com/img.aapks.com/imgs/c/9/5/c95d7d8f2388afd94a20fd5004105246_icon.png?w=180" width=140 height=140 />
     <h1> V2rayDoprax </h1>
-    <p><b> V2ray Vless tool to create thousands of vless proxies at ones! and more tools... for Doprax</b></p>
+    <p><b> V2ray is a tool to create thousands of vless and vmess proxies at ones! includes more tools... for Doprax</b></p>
 </p><br>
 
 ###### There is another tool for creating Vless proxies and some other stuff.
