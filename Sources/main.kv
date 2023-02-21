@@ -31,7 +31,7 @@
             height: 60
 
             # Style
-            background_image: "Sources/Assets/white.jpg"
+            background_image: root.background
 
             # Action View
             ActionView:
@@ -44,13 +44,25 @@
                     title: f"[b][color=#000000][font={root.font}]V2Paste[/font][/color][/b]"
                     with_previous: False
                     markup: True
-                    app_icon: ''
+                    app_icon: 'no_icon'
                     app_icon_width: 0
                     app_icon_height: 0
 
                 # Action overflow
                 ActionOverflow:
-                    
+
+                # Decode button
+                ActionButton:
+                    icon: "Sources/Assets/decode96.png"
+                    important: True
+                    background_color: "00000033"
+                    text: "Decode Vmess"
+
+                    # Action
+                    on_press:
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'DecodeMenu'  
+
                 # Settings button
                 ActionButton:
                     icon: "Sources/Assets/settings96.png"
@@ -68,7 +80,7 @@
                 ActionButton:
                     icon: "Sources/Assets/close96.png"
                     important: True
-                    background_color: "00000022"
+                    background_color: "00000033"
                     text: "Exit"
 
                     # Action
@@ -105,12 +117,31 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "Generate"
-                background_color: "#000000ee"
+                text: "Generate  2 proxies"
+                color: "ffffff"
+                background_color: "#000000"
 
                 # Action
                 on_press:
                     root.generate(output)
+
+
+            # Generate 20 button
+            Button:
+
+                # Size & Position
+                size_hint: (0.4, 0.1)
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Generate 20 Proxies"
+                color: "00ff00"
+                background_color: "#000000"
+
+                # Action
+                on_press:
+                    root.generate_20(output)
 
             # New line - Empty label
             Label:
@@ -146,9 +177,9 @@
                 markup: True
                 font_name: root.font
                 text: ""
-                hint_text: "Output of created proxies...\n\nFisrt go to settings and setup the config.\n\nPress code icon below to get help for config section"
-                background_color: "#eeeeee22"
-                foreground_color: "333333"
+                hint_text: "Output of created proxies...\n\nFirst go to settings and setup the config.\n\nPress code icon below to get help for config section"
+                background_color: "#00000022"
+                foreground_color: "000000"
 
             
             # Copy button for Vmess
@@ -164,30 +195,32 @@
                 markup: True
                 font_name: root.font
                 text: "Copy to clipboard"
-                background_color: "#000000ee"
+                color: "ffffff"
+                background_color: "#000000"
 
                 # Action
                 on_press:
                     root.copy_output(output)
 
-            # New line - Empty label
-            Label:
-                text:""
+            # Copy button for Vmess
+            Button:
 
+                # ID
+                id: copybutton
 
-            # Reset label
-            Label:
+                # Size & Position
+                size_hint: (0.4, 0.1)
 
                 # Style
                 markup: True
                 font_name: root.font
-                text: "[b][ref=Clear][color=#ff0000]Clear[/color][/ref] the output[/b]"
-                color: "000000"
+                text: "Reset the Output"
+                color: "ff0000"
+                background_color: "#000000"
 
                 # Action
-                on_ref_press:
+                on_press:
                     root.reset_output(output)
-
         # GitHub button
         ImageButton:
  
