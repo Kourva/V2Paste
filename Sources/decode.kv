@@ -1,0 +1,202 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+# Hidden action previous button color when pressed
+<ActionPreviousButton>:
+    background_down: ""
+    background_color: '#00000000'
+
+# Settings stuff
+<DecodeScreen>
+
+    # App background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: root.background
+
+    # Screen float layout
+    FloatLayout:
+
+        # ID 
+        id: floatlayout
+
+        # App action bar
+        ActionBar:
+
+            # Size & Position
+            pos_hint: {'top':1}
+            size_hint: (1, None)
+            height: 60
+
+            # Style
+            background_image: root.background
+
+            # Action View
+            ActionView:
+
+                # Separator
+                use_separator: True
+
+                # Action Previous
+                ActionPrevious:
+                    title: f"[b][color=#000000][font={root.font}]Decoder[/font][/color][/b]"
+                    with_previous: False
+                    markup: True
+                    app_icon: 'no_icon'
+                    app_icon_width: 0
+                    app_icon_height: 0
+
+                # Action overflow
+                ActionOverflow:
+                    
+                # Back button
+                ActionButton:
+                    icon: "Sources/Assets/back96.png"
+                    important: True
+                    background_color: "00000033"
+
+                    # Action
+                    on_press:
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'MainMenu'
+
+        # Grid layout
+        GridLayout:
+
+            # Size & Positions
+            cols: 1
+            row_force_default: True
+            row_default_height: "40dp"
+            size_hint: (0.7, 0.7)
+            halign: "left"
+            pos_hint: {"center_x": 0.5, "center_y":0.5}
+            background_color: "000000"
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+
+            # Text Input for vmess url to decode
+            TextInput:
+
+                # ID
+                id: vmessurl
+
+                # Size & Positions
+                size_hint: (1, None)
+                height: "100dp"
+                multiline: True
+
+                # Style
+                font_name: root.font
+                background_color: "#00000022"
+                foreground_color: "000000"
+                hint_text: "Enter Vmess url here"
+                text: ""   
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Output box for Vless
+            ScrollView:
+
+                # Size & Position
+                size_hint: (0.4, None)
+                height: "200dp"
+                do_scroll_x: False
+                do_scroll_y: True
+                always_overscroll: True
+                bar_color: '#00000022'
+
+                Label:
+
+                    # ID
+                    id: vmessdecoded
+
+                    # Style
+                    markup: True
+                    font_name: root.font
+                    text: "[b]Output of vmess url here..\n\nThis will extract your base64 Vmess url into json config.[/b]"
+                    size_hint_y: None
+                    color: "000000"
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    pos_hint: {'center_y': 0.5}  
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Decode button
+            Button:
+
+                # Size & Position
+                size_hint: (0.4, 0.1)
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Decode Vmess Url"
+                background_color: "#000000"
+
+                # Action
+                on_press:
+                    root.decode_vmess(vmessurl, vmessdecoded)
+
+            # Copy button
+            Button:
+
+                # Size & Position
+                size_hint: (0.4, 0.1)
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Copy to Clipboard"
+                background_color: "#000000"
+
+                # Action
+                on_press:
+                    root.copy_config(vmessdecoded)
+
+        # V2Paste label
+        Label:
+
+            size_hint: {1, 0.1}
+            pos_hint: {"center_x":0.5, "center_y":0.05}
+
+            # Style
+            markup: True
+            font_name: root.font
+            text: "[b][ref=Reset]V2Paste v1.2[/color][/ref][/b]"
+            color: "000000"
+                
+            # Action
+            on_ref_press:
+                root.do_game() 
+
+# EOF
