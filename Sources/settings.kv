@@ -44,32 +44,45 @@
                     title: f"[b][color=#000000][font={root.font}]Settings[/font][/color][/b]"
                     with_previous: False
                     markup: True
-                    app_icon: ''
+                    app_icon: 'no_icon'
                     app_icon_width: 0
                     app_icon_height: 0
 
                 # Action overflow
                 ActionOverflow:
-                    
-                # Help button
+
+                # Servers button
                 ActionButton:
-                    icon: "Sources/Assets/help96.png"
+                    icon: "Sources/Assets/download96.png"
                     important: True
                     background_color: "00000022"
+                    text: "Get server"
 
                     # Action
                     on_press:
-                        root.open_help()
+                        root.get_server(IP_address, Port)
+
+                    
+                # Help button
+                ActionButton:
+                    icon: "Sources/Assets/save96.png"
+                    important: True
+                    background_color: "00000022"
+                    text: "Save"
+
+                    # Action
+                    on_press:
+                        root.save_config(CloudFlare, IP_address, Port, UUID_input, Remark, Pathvmess, Pathvless)
 
                 # Back button
                 ActionButton:
                     icon: "Sources/Assets/back96.png"
                     important: True
                     background_color: "00000022"
+                    text: "Back"
 
                     # Action
                     on_press:
-                        root.save_config(CloudFlare, IP_address, Port, UUID, Remark, Pathvmess, Pathvless)
                         root.manager.transition = FadeTransition(duration=0.05)
                         root.manager.current = 'MainMenu'
 
@@ -104,9 +117,11 @@
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
+                keyboard_suggestions: True
 
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter CloudFlare Worker URL"
                 text: ""
 
@@ -120,9 +135,11 @@
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
+                keyboard_suggestions: True
                 
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter IP address"
                 text: ""
             
@@ -136,9 +153,11 @@
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
+                keyboard_suggestions: True
                 
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter Port number"
                 text: ""
             
@@ -146,15 +165,17 @@
             TextInput:
                 
                 # ID
-                id: UUID
+                id: UUID_input
                 
                 # Size & Positions
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
+                keyboard_suggestions: True
                 
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter UUID"
                 text: ""
             
@@ -168,9 +189,11 @@
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
+                keyboard_suggestions: True
                 
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter Proxy Remarks"
                 text: ""
             
@@ -184,9 +207,11 @@
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
+                keyboard_suggestions: True
                 
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter Vmess Path"
                 text: ""
 
@@ -201,28 +226,60 @@
                 size_hint: (1, None)
                 height: "30dp"
                 multiline: False
-                
+                keyboard_suggestions: True
+
                 # Style
-                background_color: "#eeeeee"
+                foreground_color: "000000"
+                background_color: "#ffffffee"
                 hint_text: "Enter Vless Path"
                 text: ""
+                
             
             # New line - Empty label
             Label:
                 text:""
 
-            # Reset label
-            Label:
+            # generate uuid
+            Button:
 
                 # Style
                 markup: True
                 font_name: root.font
-                text: "[b][ref=Reset][color=#ff0000]Reset[/color][/ref] to default[/b]"
-                color: "000000"
+                text: "[b]Generate UUID[/b]"
+                color: "ffffff"
+                background_color: "000000"
                 
                 # Action
-                on_ref_press:
-                    root.reset_settings(CloudFlare, IP_address, Port, UUID, Remark, Pathvmess, Pathvless)
+                on_press:
+                    root.generate_uuid(UUID_input)
+
+            # generate Path
+            Button:
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b]Generate Path[/b]"
+                color: "ffffff"
+                background_color: "000000"
+                
+                # Action
+                on_press:
+                    root.generate_path(Pathvmess, Pathvless)
+
+            # Reset
+            Button:
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b]Reset  Configs[/b]"
+                color: "ff0000"
+                background_color: "000000"
+                
+                # Action
+                on_press:
+                    root.reset_settings(CloudFlare, IP_address, Port, UUID_input, Remark, Pathvmess, Pathvless)
 
 
         # V2Paste label
@@ -234,7 +291,7 @@
             # Style
             markup: True
             font_name: root.font
-            text: "[b][ref=Reset]V2Paste[/color][/ref][/b]"
+            text: "[b][ref=Reset]V2Paste v1.2[/color][/ref][/b]"
             color: "000000"
                 
             # Action
