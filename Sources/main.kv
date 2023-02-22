@@ -32,6 +32,14 @@
 
             # Style
             background_image: root.background
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+
 
             # Action View
             ActionView:
@@ -55,7 +63,8 @@
                 ActionButton:
                     icon: "Sources/Assets/decode96.png"
                     important: True
-                    background_color: "00000033"
+                    background_color: "00000000"
+                    background_normal: ''
                     text: "Decode Vmess"
 
                     # Action
@@ -67,7 +76,8 @@
                 ActionButton:
                     icon: "Sources/Assets/settings96.png"
                     important: True
-                    background_color: "00000022"
+                    background_color: "00000000"
+                    background_normal: ''
                     text: "Settings"
 
                     # Action
@@ -80,7 +90,9 @@
                 ActionButton:
                     icon: "Sources/Assets/close96.png"
                     important: True
-                    background_color: "00000033"
+                    background_color: "00000000"
+                    background_normal: ''
+
                     text: "Exit"
 
                     # Action
@@ -98,6 +110,7 @@
             halign: "left"
             pos_hint: {"center_x": 0.5, "center_y":0.5}
             background_color: "000000"
+            background_normal: ''
 
             # Generate button label
             Label:
@@ -105,8 +118,10 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "[b]Generate vless/vmess proxies[/b]"
-                color: "000000"    
+                text: "[b]Generate Vless/Vmess proxies[/b]"
+                color: "#000000" 
+                background_normal: ''
+
 
             # Generate button
             Button:
@@ -119,7 +134,16 @@
                 font_name: root.font
                 text: "Generate  2 proxies"
                 color: "ffffff"
-                background_color: "#000000"
+                background_color: "#111111"
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
 
                 # Action
                 on_press:
@@ -137,7 +161,16 @@
                 font_name: root.font
                 text: "Generate 20 Proxies"
                 color: "00ff00"
-                background_color: "#000000"
+                background_color: "#111111"
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
 
                 # Action
                 on_press:
@@ -178,8 +211,10 @@
                 font_name: root.font
                 text: ""
                 hint_text: "Output of created proxies...\n\nFirst go to settings and setup the config.\n\nPress code icon below to get help for config section"
+                hint_text_color: "000000"
                 background_color: "#00000022"
-                foreground_color: "000000"
+                background_normal: ''
+
 
             
             # Copy button for Vmess
@@ -196,7 +231,16 @@
                 font_name: root.font
                 text: "Copy to clipboard"
                 color: "ffffff"
-                background_color: "#000000"
+                background_color: "#111111"
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
 
                 # Action
                 on_press:
@@ -216,11 +260,55 @@
                 font_name: root.font
                 text: "Reset the Output"
                 color: "ff0000"
-                background_color: "#000000"
+                background_color: "#111111"
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
 
                 # Action
                 on_press:
                     root.reset_output(output)
+
+            # New line - Empty label
+            Label:
+                text:""
+
+
+
+
+            # Copy button for Vmess
+            Button:
+
+                # Size & Position
+                size_hint: (0.4, 0.1)
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Clone the Proxy"
+                color: "00ff00"
+                background_color: "#111111"
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+                # Action
+                on_press:
+                    root.manager.transition = FadeTransition(duration=0.05)
+                    root.manager.current = 'CloneMenu'
+
         # GitHub button
         ImageButton:
  
