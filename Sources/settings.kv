@@ -86,6 +86,7 @@
                         root.manager.transition = FadeTransition(duration=0.05)
                         root.manager.current = 'MainMenu'
 
+
         # Grid layout
         GridLayout:
 
@@ -245,7 +246,7 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "[b]Generate UUID[/b]"
+                text: "[b]Generate the UUID[/b]"
                 color: "ffffff"
                 background_color: "000000"
                 
@@ -259,7 +260,7 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "[b]Generate Path[/b]"
+                text: "[b]Generate the Path[/b]"
                 color: "ffffff"
                 background_color: "000000"
                 
@@ -273,14 +274,13 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "[b]Reset  Configs[/b]"
+                text: "[b]Reset the  Configs[/b]"
                 color: "ff0000"
                 background_color: "000000"
                 
                 # Action
                 on_press:
                     root.reset_settings(CloudFlare, IP_address, Port, UUID_input, Remark, Pathvmess, Pathvless)
-
 
         # V2Paste label
         Label:
@@ -290,8 +290,8 @@
 
             # Style
             markup: True
-            font_name: root.font
-            text: "[b][ref=Reset]V2Paste v1.2[/color][/ref][/b]"
+            font_name: "Sources/Assets/header.ttf"
+            text: "[b][ref=Reset]V2Paste v1.3[/color][/ref][/b]"
             color: "000000"
                 
             # Action
