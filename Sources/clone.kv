@@ -1,0 +1,228 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+# Hidden action previous button color when pressed
+<ActionPreviousButton>:
+    background_down: ""
+    background_color: '#00000000'
+
+# Main menu stuff
+<CloneScreen>
+
+    # App background
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: root.background
+
+    # Screen float layout
+    FloatLayout:
+
+        # ID 
+        id: floatlayout
+
+        # App action bar
+        ActionBar:
+
+            # Size & Position
+            pos_hint: {'top':1}
+            size_hint: (1, None)
+            height: 60
+
+            # Style
+            background_image: root.background
+            canvas.before:
+                Color:
+                    rgba: .166, .207, .151, 1
+
+                Line:
+                    width: 1.05
+                    rectangle: self.x, self.y, self.width, self.height
+
+            # Action View
+            ActionView:
+
+                # Separator
+                use_separator: False
+
+                # Action Previous
+                ActionPrevious:
+                    title: f"[b][color=#000000][font={root.font}]Cloner[/font][/color][/b]"
+                    with_previous: False
+                    markup: True
+                    app_icon: 'no_icon'
+                    app_icon_width: 0
+                    app_icon_height: 0
+
+                # Action overflow
+                ActionOverflow:
+
+                # Change button
+                ActionButton:
+                    icon: "Sources/Assets/change96.png"
+                    important: True
+                    background_color: "00000033"
+
+                    # Action
+                    on_press:
+                        root.changer(ModeLabel, cloneurl, CloneButton, outputcloned)
+
+                # Back button
+                ActionButton:
+                    icon: "Sources/Assets/back96.png"
+                    important: True
+                    background_color: "00000033"
+
+                    # Action
+                    on_press:
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'MainMenu'
+
+
+        # Grid layout
+        GridLayout:
+
+            # Size & Position
+            cols: 1
+            row_force_default: True
+            row_default_height: "40dp"
+            size_hint: (0.7, 0.7)
+            halign: "left"
+            pos_hint: {"center_x": 0.5, "center_y":0.5}
+            background_color: "000000"
+
+
+            # CloudFlare worker input
+            Label:
+
+                # ID
+                id: ModeLabel
+                
+                # Size & Positions
+                size_hint: (1, None)
+
+                # Style
+                markup: True
+                font_name: root.font
+                color: "000000"
+                text: "[b]Mode : Vmess[/b]"
+
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+
+            # Text Input for vmess url to decode
+            TextInput:
+
+                # ID
+                id: cloneurl
+
+                # Size & Positions
+                size_hint: (1, None)
+                height: "100dp"
+                multiline: True
+
+                # Style
+                font_name: root.font
+                background_color: "#00000022"
+                foreground_color: "000000"
+                hint_text: "Enter Vmess url here"
+                text: ""  
+            
+            # Clone button
+            Button:
+
+                # ID
+                id: CloneButton
+
+                # Size & Position
+                size_hint: (0.4, 0.1)
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "Clone Vmess proxy"
+                background_color: "#000000"
+
+                # Action
+                on_press:
+                    root.clone_vmess(cloneurl, outputcloned) if CloneButton.text == "Clone Vmess proxy" else root.clone_vless(cloneurl, outputcloned)
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # New line - Empty label
+            Label:
+                text:""
+
+            # Output box for Vless
+            ScrollView:
+
+                # Size & Position
+                size_hint: (0.4, None)
+                height: "300dp"
+                do_scroll_x: False
+                do_scroll_y: True
+                always_overscroll: True
+                bar_color: '#000000cc'
+
+                Label:
+
+                    # ID
+                    id: outputcloned
+
+                    # Style
+                    markup: True
+                    font_name: root.font
+                    text: "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
+                    size_hint_y: None
+                    color: "000000"
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    pos_hint: {'center_y': 0.5}
+
+        # V2Paste label
+        Label:
+
+            size_hint: {1, 0.1}
+            pos_hint: {"center_x":0.5, "center_y":0.05}
+
+            # Style
+            markup: True
+            font_name: "Sources/Assets/header.ttf"
+            text: "[b][ref=Reset]V2Paste v1.3[/color][/ref][/b]"
+            color: "000000"
+                
+            # Action
+            on_ref_press:
+                root.do_game()
+
+# EOF
