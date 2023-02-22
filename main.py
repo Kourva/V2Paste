@@ -3,14 +3,14 @@
 
 #  Author  : Kourva
 #  Github  : https://github.com/kourva/V2Paste
-#  Version : 1.2
+#  Version : 1.3
 #  About   : Create Vless/Vmess proxies via given config with this simple app
 #
 #  Changes:
-#          + Multi Vmess Generator
-#          + Vmess decoder
-#          + Changed some functions
-#          + UUID generator
+#          + Bug fixes
+#          + Proxy Cloner
+#          + Icons changed
+#          + New background
 
 # All imported Libraries
 # Built-in modules for basic stuff
@@ -49,7 +49,8 @@ from kivy.uix.actionbar import *
 # Main menu screen
 # Settings screen
 # Decode menu screen
-for Sources in ["main.kv", "settings.kv", "decode.kv"]:
+# Clone menu screen
+for Sources in ["main.kv", "settings.kv", "decode.kv", "clone.kv"]:
     with open("Sources/%s" % Sources, "r") as kv:
         Builder.load_string(kv.read())
 
@@ -288,7 +289,7 @@ class MainMenuScreen(Screen):
             vibrator.vibrate(0.1)
         except:
             pass
-        webbrowser.open("https://t.me/Kourva")
+        webbrowser.open("https://t.me/V2Paste")
 
     # Opens Source Code
     def open_source(self):
@@ -467,7 +468,9 @@ class DecodeScreen(Screen):
                 "toast": True,
                 "app_icon": "Data/notification.png",
             }
+            notification.notify(**kwargs)
             return
+
         try:
             # Gets message
             target = vmessurl.text.split("vmess://")[1].strip()
@@ -502,6 +505,7 @@ class DecodeScreen(Screen):
                 "toast": True,
                 "app_icon": "Data/notification.png",
             }
+            notification.notify(**kwargs)
 
     # Copies config to clipboard
     def copy_config(self, vmessdecoded):
@@ -518,6 +522,189 @@ class DecodeScreen(Screen):
         notification.notify(**kwargs)
 
 
+# Clone menu screen
+# All needed functions for clone menu
+class CloneScreen(Screen):
+    # Path to font & background
+    font = "Sources/Assets/font.ttf"
+    background = "Sources/Assets/white.jpg"
+
+    # Mode changer
+    def changer(self, ModeLabel, cloneurl, CloneButton, outputcloned):
+        # Mode label text
+        if ModeLabel.text == "Mode : Vless":
+            if not cloneurl.text == "":
+                cloneurl._set_text("")
+            ModeLabel.text = "Mode : Vmess"
+            cloneurl.hint_text = cloneurl.hint_text.replace("Vless", "Vmess")
+            CloneButton.text = "Clone Vmess proxy"
+            outputcloned.text = "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
+        else:
+            if not cloneurl.text == "":
+                cloneurl._set_text("")
+            ModeLabel.text = "Mode : Vless"
+            cloneurl.hint_text = cloneurl.hint_text.replace("Vmess", "Vless")
+            CloneButton.text = "Clone Vless proxy"
+            outputcloned.text = "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
+
+    # Simple notification for fun
+    def do_game(self):
+        try:
+            vibrator.vibrate(0.1)
+            time.sleep(0.3)
+            vibrator.vibrate(0.1)
+        except:
+            pass
+
+        # Sends notification
+        title = "Saved"
+        message = "¯\_(ツ)_/¯"
+        ticker = "New message"
+        kwargs = {
+            "title": title,
+            "message": message,
+            "ticker": ticker,
+            "toast": True,
+            "app_icon": "Data/notification.png",
+        }
+        notification.notify(**kwargs)
+
+    # Clone Vmess URL
+    def clone_vmess(self, cloneurl, outputcloned):
+        if cloneurl.text == "":
+            title = "Copied"
+            message = "incorrect URL"
+            ticker = "New message"
+            kwargs = {
+                "title": title,
+                "message": message,
+                "ticker": ticker,
+                "toast": True,
+            }
+            notification.notify(**kwargs)
+            return
+
+        try:
+            target = cloneurl.text.split("vmess://")[1].strip()
+
+            original_message = target.encode("ascii")
+            base64_message = base64.b64decode(original_message)
+            decoded_message = base64_message.decode("ascii")
+            config_message = json.loads(decoded_message.replace("'", '"'))
+
+            ipaddr, port, remark = (
+                config_message["add"],
+                config_message["port"],
+                config_message["ps"],
+            )
+
+            with open("Data/servers.txt", "r") as file:
+                all_servers = file.readlines()
+                iplist = [random.choice(all_servers).split("\n")[0] for _ in range(20)]
+
+            clones = []
+            for index, server in enumerate(iplist, start=1):
+                temp = config_message
+                temp["add"] = server
+                temp["port"] = "443"
+                temp["ps"] = remark + "-" + str(index)
+
+                vmess_config = str(temp).encode("ascii")
+                vmess_url = base64.b64encode(vmess_config).decode("ascii")
+                result = "vmess://" + vmess_url + "\n\n"
+                clones.append(result)
+
+            result = "".join(clones)
+            outputcloned.text = result
+            Clipboard.copy(result)
+
+            title = "Generator"
+            message = "20 Vmess proxy cloned to clipboard."
+            ticker = "New message"
+            kwargs = {
+                "title": title,
+                "message": message,
+                "ticker": ticker,
+                "app_name": "V2Paste",
+                "app_icon": "Data/notification.png",
+            }
+            notification.notify(**kwargs)
+
+        except:
+            title = "Error"
+            message = "incorrect URL"
+            ticker = "New message"
+            kwargs = {
+                "title": title,
+                "message": message,
+                "ticker": ticker,
+                "toast": True,
+            }
+            notification.notify(**kwargs)
+
+    # clone Vless URL
+    def clone_vless(self, cloneurl, outputcloned):
+        if cloneurl.text == "":
+            title = "Error"
+            message = "incorrect URL"
+            ticker = "New message"
+            kwargs = {
+                "title": title,
+                "message": message,
+                "ticker": ticker,
+                "toast": True,
+            }
+            notification.notify(**kwargs)
+            return
+
+        try:
+            target = cloneurl.text.split("@")[1].split("?")[0]
+            ipaddr, port = target.split(":")
+            remark = cloneurl.text.strip().split("#")[1]
+
+            with open("Data/servers.txt", "r") as file:
+                all_servers = file.readlines()
+                iplist = [random.choice(all_servers).split("\n")[0] for _ in range(20)]
+
+            clones = []
+            for index, server in enumerate(iplist, start=1):
+                tempvar = (
+                    cloneurl.text.strip()
+                    .replace(ipaddr, server)
+                    .replace(port, "443")
+                    .replace(remark, remark + "-" + str(index) + "\n\n")
+                )
+                clones.append(tempvar)
+
+            result = "".join(clones)
+            outputcloned.text = result
+            Clipboard.copy(result)
+
+            title = "Generator"
+            message = "20 Vmess proxy cloned to clipboard."
+            ticker = "New message"
+            kwargs = {
+                "title": title,
+                "message": message,
+                "ticker": ticker,
+                "app_name": "V2Paste",
+                "app_icon": "Data/notification.png",
+            }
+            notification.notify(**kwargs)
+
+        except:
+            title = "Error"
+            message = "incorrect URL"
+            ticker = "New message"
+            kwargs = {
+                "title": title,
+                "message": message,
+                "ticker": ticker,
+                "toast": True,
+            }
+            notification.notify(**kwargs)
+
+
 # Main class of the app
 class V2PasteApp(App):
     # Build method
@@ -532,6 +719,10 @@ class V2PasteApp(App):
         # Decode menu screen
         self.DecodeScreen = DecodeScreen(name="DecodeMenu")
         root.add_widget(self.DecodeScreen)
+
+        # Clone menu screen
+        self.CloneScreen = CloneScreen(name="CloneMenu")
+        root.add_widget(self.CloneScreen)
 
         # Settings menu screen
         self.SettingsScreen = SettingsScreen(name="Settings")
