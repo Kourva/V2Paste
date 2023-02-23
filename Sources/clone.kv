@@ -34,10 +34,10 @@
             background_image: root.background
             canvas.before:
                 Color:
-                    rgba: .166, .207, .151, 1
+                    rgba: .168, .210, .162, 1
 
                 Line:
-                    width: 1.05
+                    width: 3
                     rectangle: self.x, self.y, self.width, self.height
 
             # Action View
@@ -48,12 +48,18 @@
 
                 # Action Previous
                 ActionPrevious:
-                    title: f"[b][color=#000000][font={root.font}]Cloner[/font][/color][/b]"
-                    with_previous: False
+                    title: f"[b][color=#a8d2a2][font={root.font}]Cloner[/font][/color][/b]"
+                    with_previous: True
                     markup: True
                     app_icon: 'no_icon'
                     app_icon_width: 0
                     app_icon_height: 0
+                    previous_image: 'Sources/Assets/back96.png'
+
+                    on_release:
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'MainMenu'
+
 
                 # Action overflow
                 ActionOverflow:
@@ -67,18 +73,6 @@
                     # Action
                     on_press:
                         root.changer(ModeLabel, cloneurl, CloneButton, outputcloned)
-
-                # Back button
-                ActionButton:
-                    icon: "Sources/Assets/back96.png"
-                    important: True
-                    background_color: "00000033"
-
-                    # Action
-                    on_press:
-                        root.manager.transition = FadeTransition(duration=0.05)
-                        root.manager.current = 'MainMenu'
-
 
         # Grid layout
         GridLayout:
@@ -94,19 +88,34 @@
 
 
             # CloudFlare worker input
-            Label:
+            Button:
 
                 # ID
                 id: ModeLabel
                 
                 # Size & Positions
                 size_hint: (1, None)
+                height: "33dp"
 
                 # Style
                 markup: True
                 font_name: root.font
-                color: "000000"
-                text: "[b]Mode : Vmess[/b]"
+                text: "[b][color=000000]Mode : Vmess[/color][/b]"
+                disabled: True
+                background_normal: ''
+                background_disabled_normal: ''
+                background_color: "f3c808"
+                canvas:
+                    Color:
+                        rgba: .243, .200, .008, 0.7
+                    Line:
+                        width: 2.5
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 3, 3, \
+                            self.height \
+                            )
 
 
             # New line - Empty label
@@ -131,10 +140,27 @@
 
                 # Style
                 font_name: root.font
-                background_color: "#00000022"
                 foreground_color: "000000"
                 hint_text: "Enter Vmess url here"
                 text: ""  
+                hint_text_color: "a8d2a255"
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
+
             
             # Clone button
             Button:
@@ -149,7 +175,20 @@
                 markup: True
                 font_name: root.font
                 text: "Clone Vmess proxy"
-                background_color: "#000000"
+                color: "a8d2a2"
+                background_normal: ''
+                background_color: "a8d2a200"
+                canvas:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            15, 15, 3, 3, \
+                            self.height \
+                            )
 
                 # Action
                 on_press:
@@ -192,7 +231,7 @@
                 do_scroll_x: False
                 do_scroll_y: True
                 always_overscroll: True
-                bar_color: '#000000cc'
+                bar_color: '#f3c80888'
 
                 Label:
 
@@ -204,7 +243,7 @@
                     font_name: root.font
                     text: "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
                     size_hint_y: None
-                    color: "000000"
+                    color: "f3c808"
                     height: self.texture_size[1]
                     text_size: self.width, None
                     pos_hint: {'center_y': 0.5}
@@ -218,8 +257,8 @@
             # Style
             markup: True
             font_name: "Sources/Assets/header.ttf"
-            text: "[b][ref=Reset]V2Paste v1.3[/color][/ref][/b]"
-            color: "000000"
+            text: "[b][ref=Reset]V2Paste v2.0[/color][/ref][/b]"
+            color: "a8d2a2"
                 
             # Action
             on_ref_press:
