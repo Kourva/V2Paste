@@ -8,7 +8,6 @@
 #
 #  Changes:
 #          + Bug fixes
-#          + Proxy Cloner
 #          + Icons changed
 #          + New background
 
@@ -36,6 +35,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.core.clipboard import Clipboard
 from kivy.properties import ObjectProperty
+from kivy.graphics import Color, Rectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -66,8 +66,8 @@ class ImageButton(ButtonBehavior, Image):
 # All needed functions for main menu
 class MainMenuScreen(Screen):
     # Path to font & background
-    font = "Sources/Assets/font.ttf"
-    background = "Sources/Assets/white.jpg"
+    font = "Sources/Assets/header.otf"
+    background = "Sources/Assets/background.png"
 
     # Load config from config file: so it will save previous config.
     def load_config(self):
@@ -304,8 +304,8 @@ class MainMenuScreen(Screen):
 # All needed functions for settings menu
 class SettingsScreen(Screen):
     # Path to font background
-    font = "Sources/Assets/font.ttf"
-    background = "Sources/Assets/white.jpg"
+    font = "Sources/Assets/header.otf"
+    background = "Sources/Assets/background.png"
 
     # Resets settings & Sends notification
     def reset_settings(self, *args):
@@ -424,8 +424,8 @@ class SettingsScreen(Screen):
 # All needed functions for decode menu
 class DecodeScreen(Screen):
     # Path to font & background
-    font = "Sources/Assets/font.ttf"
-    background = "Sources/Assets/white.jpg"
+    font = "Sources/Assets/header.otf"
+    background = "Sources/Assets/background.png"
 
     # Simple notification for fun
     def do_game(self):
@@ -526,23 +526,23 @@ class DecodeScreen(Screen):
 # All needed functions for clone menu
 class CloneScreen(Screen):
     # Path to font & background
-    font = "Sources/Assets/font.ttf"
-    background = "Sources/Assets/white.jpg"
+    font = "Sources/Assets/header.otf"
+    background = "Sources/Assets/background.png"
 
     # Mode changer
     def changer(self, ModeLabel, cloneurl, CloneButton, outputcloned):
         # Mode label text
-        if ModeLabel.text == "Mode : Vless":
+        if ModeLabel.text == "[b][color=000000]Mode : Vless[/color][/b]":
             if not cloneurl.text == "":
                 cloneurl._set_text("")
-            ModeLabel.text = "Mode : Vmess"
+            ModeLabel.text = "[b][color=000000]Mode : Vmess[/color][/b]"
             cloneurl.hint_text = cloneurl.hint_text.replace("Vless", "Vmess")
             CloneButton.text = "Clone Vmess proxy"
             outputcloned.text = "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
         else:
             if not cloneurl.text == "":
                 cloneurl._set_text("")
-            ModeLabel.text = "Mode : Vless"
+            ModeLabel.text = "[b][color=000000]Mode : Vless[/color][/b]"
             cloneurl.hint_text = cloneurl.hint_text.replace("Vmess", "Vless")
             CloneButton.text = "Clone Vless proxy"
             outputcloned.text = "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
