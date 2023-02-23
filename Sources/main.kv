@@ -34,10 +34,10 @@
             background_image: root.background
             canvas.before:
                 Color:
-                    rgba: 1, 1, 1, 1
+                    rgba: .168, .210, .162, 1
 
                 Line:
-                    width: 1
+                    width: 3
                     rectangle: self.x, self.y, self.width, self.height
 
 
@@ -49,7 +49,7 @@
 
                 # Action Previous
                 ActionPrevious:
-                    title: f"[b][color=#000000][font={root.font}]V2Paste[/font][/color][/b]"
+                    title: f"[b][color=#a8d2a2][font={root.font}]V2Paste[/font][/color][/b]"
                     with_previous: False
                     markup: True
                     app_icon: 'no_icon'
@@ -119,7 +119,7 @@
                 markup: True
                 font_name: root.font
                 text: "[b]Generate Vless/Vmess proxies[/b]"
-                color: "#000000" 
+                color: "#a8d2a2" 
                 background_normal: ''
 
 
@@ -132,18 +132,25 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "Generate  2 proxies"
-                color: "ffffff"
-                background_color: "#111111"
+                text: "Generate 02 proxies"
+                color: "a8d2a2"
                 background_normal: ''
-
-                canvas.before:
+                background_color: "a8d2a200"
+                canvas:
                     Color:
-                        rgba: 1, 1, 1, 1
+                        group: "outline-color"
+                        rgba: .168, .210, .162, 1
 
                     Line:
-                        width: 1
-                        rectangle: self.x, self.y, self.width, self.height
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            15, 15, 3, 3, \
+                            self.height \
+                            )
+
+
 
                 # Action
                 on_press:
@@ -160,17 +167,24 @@
                 markup: True
                 font_name: root.font
                 text: "Generate 20 Proxies"
-                color: "00ff00"
-                background_color: "#111111"
+                color: "f3c808"
+                background_color: "#f3c80800"
                 background_normal: ''
 
-                canvas.before:
+                canvas:
                     Color:
-                        rgba: 1, 1, 1, 1
+                        group: "outline-color"
+                        rgba: .168, .210, .162, 1
 
                     Line:
-                        width: 1
-                        rectangle: self.x, self.y, self.width, self.height
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 15, 15, \
+                            self.height \
+                            )
+
 
                 # Action
                 on_press:
@@ -209,11 +223,24 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: ""
                 hint_text: "Output of created proxies...\n\nFirst go to settings and setup the config.\n\nPress code icon below to get help for config section"
-                hint_text_color: "000000"
-                background_color: "#00000022"
+                hint_text_color: "a8d2a255"
+                background_color: "#00000044"
+                background_selected: 'ffffff'
                 background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
 
 
             
@@ -230,17 +257,20 @@
                 markup: True
                 font_name: root.font
                 text: "Copy to clipboard"
-                color: "ffffff"
-                background_color: "#111111"
+                color: "a8d2a2"
                 background_normal: ''
-
-                canvas.before:
+                background_color: "a8d2a200"
+                canvas:
                     Color:
-                        rgba: 1, 1, 1, 1
-
+                        rgba: .186, .210, .162, 0.7
                     Line:
-                        width: 1
-                        rectangle: self.x, self.y, self.width, self.height
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            15, 15, 3, 3, \
+                            self.height \
+                            )
 
                 # Action
                 on_press:
@@ -259,17 +289,9 @@
                 markup: True
                 font_name: root.font
                 text: "Reset the Output"
-                color: "ff0000"
-                background_color: "#111111"
+                color: "aa0000"
                 background_normal: ''
-
-                canvas.before:
-                    Color:
-                        rgba: 1, 1, 1, 1
-
-                    Line:
-                        width: 1
-                        rectangle: self.x, self.y, self.width, self.height
+                background_color: "ee000000"
 
                 # Action
                 on_press:
@@ -279,10 +301,18 @@
             Label:
                 text:""
 
+            # Generate button label
+            Label:
+
+                # Style
+                markup: True
+                font_name: root.font
+                text: "[b]Clone 20 Vless/Vmess proxies[/b]"
+                color: "#a8d2a2" 
+                background_normal: ''
 
 
-
-            # Copy button for Vmess
+            # Cloner button for Vmess
             Button:
 
                 # Size & Position
@@ -291,23 +321,27 @@
                 # Style
                 markup: True
                 font_name: root.font
-                text: "Clone the Proxy"
-                color: "00ff00"
-                background_color: "#111111"
+                text: "Clone 20 Proxies"
+                color: "000000"
+                background_color: "#f3c808"
                 background_normal: ''
 
-                canvas.before:
+                canvas:
                     Color:
-                        rgba: 1, 1, 1, 1
-
+                        rgba: .243, .200, .008, 0.7
                     Line:
-                        width: 1
-                        rectangle: self.x, self.y, self.width, self.height
+                        width: 2.5
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 3, 3, \
+                            self.height \
+                            )
 
-                # Action
                 on_press:
                     root.manager.transition = FadeTransition(duration=0.05)
                     root.manager.current = 'CloneMenu'
+
 
         # GitHub button
         ImageButton:
