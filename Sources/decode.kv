@@ -32,6 +32,13 @@
 
             # Style
             background_image: root.background
+            canvas.before:
+                Color:
+                    rgba: .168, .210, .162, 1
+
+                Line:
+                    width: 3
+                    rectangle: self.x, self.y, self.width, self.height
 
             # Action View
             ActionView:
@@ -41,24 +48,15 @@
 
                 # Action Previous
                 ActionPrevious:
-                    title: f"[b][color=#000000][font={root.font}]Decoder[/font][/color][/b]"
-                    with_previous: False
+                    title: f"[b][color=#a8d2a2][font={root.font}]Decoder[/font][/color][/b]"
+                    with_previous: True
                     markup: True
                     app_icon: 'no_icon'
                     app_icon_width: 0
                     app_icon_height: 0
+                    previous_image: 'Sources/Assets/back96.png'
 
-                # Action overflow
-                ActionOverflow:
-                    
-                # Back button
-                ActionButton:
-                    icon: "Sources/Assets/back96.png"
-                    important: True
-                    background_color: "00000033"
-
-                    # Action
-                    on_press:
+                    on_release:
                         root.manager.transition = FadeTransition(duration=0.05)
                         root.manager.current = 'MainMenu'
 
@@ -100,6 +98,23 @@
                 foreground_color: "000000"
                 hint_text: "Enter Vmess url here"
                 text: ""   
+                hint_text_color: "a8d2a255"
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
 
             # New line - Empty label
             Label:
@@ -142,7 +157,7 @@
                     font_name: root.font
                     text: "[b]Output of Vmess URL here..\n\nThis will extract data from your Base64 URL.[/b]"
                     size_hint_y: None
-                    color: "000000"
+                    color: "f3c808"
                     height: self.texture_size[1]
                     text_size: self.width, None
                     pos_hint: {'center_y': 0.5}  
@@ -161,7 +176,20 @@
                 markup: True
                 font_name: root.font
                 text: "Decode Vmess Url"
-                background_color: "#000000"
+                color: "a8d2a2"
+                background_normal: ''
+                background_color: "a8d2a200"
+                canvas:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            15, 15, 3, 3, \
+                            self.height \
+                            )
 
                 # Action
                 on_press:
@@ -177,11 +205,26 @@
                 markup: True
                 font_name: root.font
                 text: "Copy to Clipboard"
-                background_color: "#000000"
+                color: "a8d2a2"
+                background_normal: ''
+                background_color: "a8d2a200"
+                canvas:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 15, 15, \
+                            self.height \
+                            )
 
                 # Action
                 on_press:
                     root.copy_config(vmessdecoded)
+
+
 
         # V2Paste label
         Label:
@@ -192,8 +235,8 @@
             # Style
             markup: True
             font_name: "Sources/Assets/header.ttf"
-            text: "[b][ref=Reset]V2Paste v1.3[/color][/ref][/b]"
-            color: "000000"
+            text: "[b][ref=Reset]V2Paste v2.0[/color][/ref][/b]"
+            color: "a8d2a2"
                 
             # Action
             on_ref_press:
