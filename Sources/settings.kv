@@ -32,21 +32,36 @@
 
             # Style
             background_image: root.background
+            canvas.before:
+                Color:
+                    rgba: .168, .210, .162, 1
+
+                Line:
+                    width: 3
+                    rectangle: self.x, self.y, self.width, self.height
 
             # Action View
             ActionView:
 
                 # Separator
                 use_separator: True
+                
 
                 # Action Previous
                 ActionPrevious:
-                    title: f"[b][color=#000000][font={root.font}]Settings[/font][/color][/b]"
-                    with_previous: False
+                    title: f"[b][color=#a8d2a2][font={root.font}]Settings[/font][/color][/b]"
+                    with_previous: True
                     markup: True
-                    app_icon: 'no_icon'
+                    app_icon: ''
                     app_icon_width: 0
                     app_icon_height: 0
+                    previous_image: 'Sources/Assets/back96.png'
+
+                    on_release:
+                        root.manager.transition = FadeTransition(duration=0.05)
+                        root.manager.current = 'MainMenu'
+
+
 
                 # Action overflow
                 ActionOverflow:
@@ -73,18 +88,7 @@
                     # Action
                     on_press:
                         root.save_config(CloudFlare, IP_address, Port, UUID_input, Remark, Pathvmess, Pathvless)
-
-                # Back button
-                ActionButton:
-                    icon: "Sources/Assets/back96.png"
-                    important: True
-                    background_color: "00000022"
-                    text: "Back"
-
-                    # Action
-                    on_press:
-                        root.manager.transition = FadeTransition(duration=0.05)
-                        root.manager.current = 'MainMenu'
+                        
 
 
         # Grid layout
@@ -100,13 +104,31 @@
             background_color: "000000"
 
             # Proxy config label
-            Label:
+            Button:
+
+                # Size & Positions
+                size_hint: (1, None)
+                height: "33dp"
 
                 # Style
                 markup: True
+                disabled: True
                 font_name: root.font
-                text: "[b]Proxy Config[/b]"
-                color: "000000"
+                text: "[b][color=#000000]Proxy Config[/b]"
+                background_normal: ''
+                background_disabled_normal: ''
+                background_color: "f3c808"
+                canvas:
+                    Color:
+                        rgba: .243, .200, .008, 0.7
+                    Line:
+                        width: 2.5
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 3, 3, \
+                            self.height \
+                            )
 
             # CloudFlare worker input
             TextInput:
@@ -121,10 +143,28 @@
                 keyboard_suggestions: True
 
                 # Style
-                foreground_color: "000000"
-                background_color: "#ffffffee"
+                foreground_color: "ffffff"
                 hint_text: "Enter CloudFlare Worker URL"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
+
 
             # IP address input
             TextInput:
@@ -140,9 +180,26 @@
                 
                 # Style
                 foreground_color: "000000"
-                background_color: "#ffffffee"
                 hint_text: "Enter IP address"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
             
             # Port number input
             TextInput:
@@ -158,9 +215,26 @@
                 
                 # Style
                 foreground_color: "000000"
-                background_color: "#ffffffee"
                 hint_text: "Enter Port number"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
             
             # UUID input
             TextInput:
@@ -176,9 +250,26 @@
                 
                 # Style
                 foreground_color: "000000"
-                background_color: "#ffffffee"
                 hint_text: "Enter UUID"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
             
             # Remark input
             TextInput:
@@ -194,9 +285,26 @@
                 
                 # Style
                 foreground_color: "000000"
-                background_color: "#ffffffee"
                 hint_text: "Enter Proxy Remarks"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
             
             # Path input
             TextInput:
@@ -212,9 +320,26 @@
                 
                 # Style
                 foreground_color: "000000"
-                background_color: "#ffffffee"
                 hint_text: "Enter Vmess Path"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
 
             
             # Path input
@@ -231,9 +356,26 @@
 
                 # Style
                 foreground_color: "000000"
-                background_color: "#ffffffee"
                 hint_text: "Enter Vless Path"
                 text: ""
+                hint_text_color: "a8d2a255"
+                font_name: root.font
+                background_color: "#00000044"
+                background_selected: 'ffffff'
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 10, 10, \
+                            self.height \
+                            )
+                    Color:
+                        rgba: 1, 1, 1, 1
                 
             
             # New line - Empty label
@@ -247,8 +389,20 @@
                 markup: True
                 font_name: root.font
                 text: "[b]Generate the UUID[/b]"
-                color: "ffffff"
-                background_color: "000000"
+                color: "a8d2a2"
+                background_normal: ''
+                background_color: "a8d2a200"
+                canvas:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            15, 15, 3, 3, \
+                            self.height \
+                            )
                 
                 # Action
                 on_press:
@@ -261,8 +415,20 @@
                 markup: True
                 font_name: root.font
                 text: "[b]Generate the Path[/b]"
-                color: "ffffff"
-                background_color: "000000"
+                color: "a8d2a2"
+                background_normal: ''
+                background_color: "a8d2a200"
+                canvas:
+                    Color:
+                        rgba: .186, .210, .162, 0.7
+                    Line:
+                        width: 1.55
+                        rounded_rectangle:
+                            ( \
+                            self.x, self.y, self.width, self.height, \
+                            3, 3, 15, 15, \
+                            self.height \
+                            )
                 
                 # Action
                 on_press:
@@ -275,8 +441,9 @@
                 markup: True
                 font_name: root.font
                 text: "[b]Reset the  Configs[/b]"
-                color: "ff0000"
-                background_color: "000000"
+                color: "aa0000"
+                background_normal: ''
+                background_color: "ee000000"
                 
                 # Action
                 on_press:
@@ -291,8 +458,8 @@
             # Style
             markup: True
             font_name: "Sources/Assets/header.ttf"
-            text: "[b][ref=Reset]V2Paste v1.3[/color][/ref][/b]"
-            color: "000000"
+            text: "[b][ref=Reset]V2Paste v2.0[/color][/ref][/b]"
+            color: "a8d2a2"
                 
             # Action
             on_ref_press:
