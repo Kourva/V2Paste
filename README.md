@@ -21,7 +21,7 @@ Feel free to download this app from releases page
 So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/Kourva/V2Paste/issues).
 
 ### ▍Guide
-If you have any question or help, check out our Telegram channel
+If you have any question or help, check out our Telegram channel<br>
 Link: [V2Paste Updates](https://t.me/V2Paste)
 
 # Setup
