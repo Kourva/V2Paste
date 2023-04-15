@@ -1,68 +1,61 @@
 <p>
-    <img align="left" src="https://user-images.githubusercontent.com/118578799/221044204-0786cc30-05ef-42e0-8f85-f7bd780dd027.png" width=140 height=140 />
+    <img align="left" src="https://github.com/Kourva/V2Paste/blob/main/Data/icon.png" width=140 height=140 />
     <h1> V2Paste </h1>
-    <p><b> Create Vless/Vmess proxies via given config with this simple app in Android </b></p>
+    <p><b> Multi-Tool V2ray proxy app for android.</b></p>
 </p>
 <br>
 
-# Version
-#### V1.2
-+ Generates 20 proxies at ones
-+ Vmess decoder - URL to Json
-+ UUID generator
-+ Bug fixed
+### ▍Version 3.0.0 Update
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Fixed Vmess decode function <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Cloner limit up to 50 <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ QRcode in single proxy generator <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ New theme and icons <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ New Status bar <br>
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Cloner limit controller <br>
 
-# Download 
-###### Feel free to download this app from releases page
-###### Download: [V2Paste-1.2](https://github.com/Kourva/V2Paste/releases/tag/v1.2)
+### ▍Download 
+Feel free to download this app from releases page
+<br>Download: [V2Paste-1.2](https://github.com/Kourva/V2Paste/releases/tag/v3.0.0)
+
+### ▍Idea
+So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/Kourva/V2Paste/issues).
+
+### ▍Guide
+If you have any question or help, check out our Telegram channel
+Link: [V2Paste Updates](https://t.me/V2Paste)
 
 # Setup
 #### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
-+ clone
+#### ⒈ clone the reposytory
 ```bash
 git clone https://github.com/Kourva/V2Paste && cd V2Paste
 ```
-+ requirements
+#### ⒉ Navigate to V2Paste directory
 ```bash
-pip install -r Lib/requirements.txt
+cd V2Paste
 ```
-+ run
+#### ⒊ install requirements for app
+```bash
+chmod +x Lib/install.sh && ./Lib/install.sh
+```
+#### ⒋ Install python-dbus for notification (optional)
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Debian based
+```bash
+sudo apt install python-dbus
+```
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Arch based
+```bash
+sudo pacman -S python-dbus
+```
+#### ⒌ run the app
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Normally
 ```bash
 python main.py
 ```
-
-# Usage
-###### So there are **Seven** Input boxes. None of them can be empty!
-###### For more help, go to [V2rayDoprax](https://github.com/Kourva/V2rayDoprax) repository.
-+ **CloudFlare**: Your worker url from [CloudFlare](https://cloudflare.com) without **https://** and **/** at the end.
-```bash
-xxx.yyy.workers.dev
+&nbsp;&nbsp;&nbsp;&nbsp; ▣ Specific phone
 ```
-+ **IP Adress**: Your IP address . Don't have? [get one](http://bot.sudoer.net/result.cf).
-```bash
-255.255.255.255
+python main.py -m screen:600x800
 ```
-+ **Port**: Your port number.
-```bash
-443
-```
-+ **UUID**: Your UUID here. Don't have? [generate one](https://getafreenode.com/).
-```bash
-xxxxxxxx-yyyy-yyyy-yyyy-xxxxxxxxxxxx
-```
-+ **Remark**: Choose a name for your proxy **without space**. 
-```bash
-ProxyNumber10
-```
-+ **Path vmess**: your Vmess path
-```bash
-vmess
-```
-+  **Path vless**: your Vless path
-```bash
-vless
-```
-#### Update: You can generate UUID, Path name and Get Ip adress and port!
 
 <p>
     <img align="left" src="https://user-images.githubusercontent.com/118578799/219371927-2ebe765b-cdef-4b61-94d5-abd2b63d56f9.png" width=140 height=140 />
