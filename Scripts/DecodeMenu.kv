@@ -1,0 +1,158 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<DecodeMenu>
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+
+        ImageButton:
+            size_hint: 1, 0.6
+            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            source: "Assets/map_blur.png"
+
+        ImageButton:
+            size_hint:  0.2, 0.1
+            pos_hint: {"center_x": 0.125, "center_y": 0.95}
+            source: "Assets/back.png"
+            on_release:
+                root.manager.transition = FadeTransition(duration=0.09)
+                root.manager.current = 'MainMenu'
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.125, "center_y": 0.90}
+            text: "Back"
+            font_size: "12sp"
+            color: "#aaaaaa"
+            font_name: root.font
+
+        GridLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+            cols: 2
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+            Button:
+                id: Decode_Mode
+                text: "Current Mode: [color=#ffff00]Vmess[/color]"
+                halign: "left"
+                text_size:  (None,None)
+                size_hint_x: 0.7
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: 0, 0.110, 0.175, 1
+                background_normal: ''
+                background_down: 'ff000011'
+
+            Button:
+                text: "Change"
+                size_hint_x: 0.3
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: "#00808088"
+                background_normal: ''
+                background_down: 'ff000011'
+                color: "#ffffff"
+                on_release:
+                    root.change_mode(Decode_Mode, Decode_Input)
+
+        GridLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            cols: 2
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+            
+            TextInput:
+                id: Decode_Input
+                markup: True 
+                font_name: root.font
+                hint_text: "Enter Vmess Proxy..."
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.7
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffff00"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+                multiline: False
+
+            Button:
+                text: "Decode"
+                size_hint_x: 0.3
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: "#ff000022"
+                background_normal: ''
+                background_down: 'ff000011'
+                on_release:
+                    root.Decode(Decode_Mode, Decode_Input, Decode_Output)
+
+        ScrollView:
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            size_hint: 0.9, 0.55
+            do_scroll_x: False
+            bar_color: "#008080"
+            bar_width: 1
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 0, 0, 5, 5, self.height
+
+            GridLayout:
+                cols: 1
+                size_hint: 1, None
+                height: self.minimum_height
+                spacing: "10dp"
+
+                Label:
+                    id: Decode_Output
+                    text: "Proxy Decoder Section.\nIn this section you can decode base64 encoded proxies or get config from proxy URLs.\n\nAvailabel decode mods are:\n    + Vmess\n\nExample of output for Vmess proxy:\n\nvmess://eyJ2IjogIjIiLCAicHMiOiAidm1lc3MgMjAwMiBycCIsICJhZGQiOiAiMTIzLjQ1Ni43ODkuMCIsICJwb3J0IjogMTIzNCwgImlkIjogInh4eHh4eHgteHh4eHgteHh4eC14eHh4eHh4LXh4eHh4eHh4LXh4eHh4eHh4eHh4eCIsICJhaWQiOiA2NCwgIm5ldCI6ICJ0Y3AiLCAidHlwZSI6ICJub25lIiwgImhvc3QiOiAiIiwgInBhdGgiOiAiIiwgInRscyI6ICIifQ==\n\nOutput:\n\nv     = '2'\nps    = 'vmess 2002 rp'\nadd   = '123.456.789.0'\nport  = 1234\nid    = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'\naid   = 64\nnet   = 'tcp'\ntype  = 'none'\nhost  = \npath  = \ntls   = \n\n\nYour output will be shown here and you can copy output from the copy button next to your output."
+                    markup: True 
+                    font_name: "RobotoMono-Regular.ttf"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    padding: 10, 10
+
+                Button:
+                    pos_hint: {"center_x": 0.5}
+                    text: "Copy to clipboard"
+                    height: "40dp"
+                    size_hint_y: None
+                    padding: 10, 10
+                    markup: True 
+                    font_name: "Assets/font.ttf"
+                    background_color: "#008080"
+                    background_normal: ''
+                    background_down: 'ff000011'
+                    color: "#ffffff"
+                    on_release:
+                        root.copy_to_clipboard(Decode_Output)

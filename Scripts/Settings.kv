@@ -1,0 +1,297 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<Settings>
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+
+        ImageButton:
+            size_hint: 1, 0.6
+            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            source: "Assets/map_blur.png"
+
+        ImageButton:
+            size_hint:  0.2, 0.1
+            pos_hint: {"center_x": 0.125, "center_y": 0.95}
+            source: "Assets/back.png"
+            on_release:
+                root.manager.transition = FadeTransition(duration=0.09)
+                root.manager.current = 'MainMenu'
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.125, "center_y": 0.90}
+            text: "Back"
+            font_size: "12sp"
+            color: "#aaaaaa"
+            font_name: root.font
+
+        ImageButton:
+            size_hint:  0.2, 0.1
+            pos_hint: {"center_x": 0.875, "center_y": 0.95}
+            source: "Assets/save.png"
+            on_release:
+                root.save_config(CloudFlare, IP_address, Port, UUID_input, Remark, Pathvmess, Pathvless)
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.875, "center_y": 0.90}
+            text: "Save"
+            font_size: "12sp"
+            color: "#aaaaaa"
+            font_name: root.font
+
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+            text: "Fill the requirements for your proxy"
+            color: "#ffffff"
+            font_name: root.font
+
+        GridLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.7}
+            cols: 1
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+            TextInput:
+                multiline: False
+                id: CloudFlare
+                markup: True 
+                font_name: root.font
+                hint_text: "Enter Worker Address..."
+                hint_text_color: "#00aaff55"
+                size_hint_x:1
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+
+        BoxLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+            cols: 3
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+
+            TextInput:
+                multiline: False
+                id: IP_address
+                markup: True 
+                font_name: root.font
+                hint_text: "Enter IP Address..."
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.6
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+
+            TextInput:
+                multiline: False
+                id: Port
+                markup: True 
+                font_name: root.font
+                hint_text: "Port"
+                halign: "center"
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.2
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+                input_type: 'number'
+
+            Button:
+                text: "New"
+                size_hint_x: 0.2
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: "#ff000022"
+                background_normal: ''
+                background_down: 'ff000011'
+                on_release:
+                    root.get_ip_port(IP_address, Port)
+        
+        GridLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            cols: 2
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+
+            TextInput:
+                multiline: False
+                id: UUID_input 
+                markup: True 
+                font_name: root.font
+                hint_text: "Enter UUID..."
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.8
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+
+            Button:
+                text: "New"
+                size_hint_x: 0.2
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: "#ff000022"
+                background_normal: ''
+                background_down: 'ff000011'
+                on_release:
+                    root.generate_uuid(UUID_input)
+
+        BoxLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            cols: 3
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+
+            TextInput:
+                multiline: False
+                id: Pathvmess
+                markup: True 
+                font_name: root.font
+                hint_text: "Vmess path..."
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.4
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+
+            TextInput:
+                multiline: False
+                id: Pathvless
+                markup: True 
+                font_name: root.font
+                hint_text: "Vless path..."
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.4
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+
+            Button:
+                text: "New"
+                size_hint_x: 0.2
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: "#ff000022"
+                background_normal: ''
+                background_down: 'ff000011'
+                on_release:
+                    root.generate_string(Pathvmess, Pathvless)
+
+        GridLayout:
+            size_hint: .9, None
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            cols: 2
+            spacing: 3
+            padding: 3
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+
+            TextInput:
+                multiline: False
+                id: Remark 
+                markup: True 
+                font_name: root.font
+                hint_text: "Enter Remark..."
+                hint_text_color: "#00aaff55"
+                size_hint_x: 0.8
+                background_normal: ''
+                background_color: "#101010CC"
+                foreground_color: "ffffffff"
+                height: 40
+                padding_y: (self.height - self.line_height) / 2
+
+            Button:
+                text: "New"
+                size_hint_x: 0.2
+                markup: True 
+                font_name: "Assets/font.ttf"
+                background_color: "#ff000022"
+                background_normal: ''
+                background_down: 'ff000011'
+                on_release:
+                    root.generate_string(Remark)
+
+        Button:
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            text: "Reset all input fields"
+            size_hint: 0.9, None
+            height: "40dp"
+            markup: True 
+            font_name: "Assets/font.ttf"
+            background_color: "#ff000022"
+            background_normal: ''
+            background_down: 'ff000011'
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, 0.110, 0.175, 1
+
+                Line:
+                    width: 1.1
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+            on_release:
+                root.reset_config(CloudFlare, IP_address, Port, UUID_input, Remark, Pathvmess, Pathvless)
