@@ -1,0 +1,87 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<StartMenu>
+
+    canvas.before:
+        Color:
+            rgba: 0.0039, 0.0039, 0.0039, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+
+        Button:
+            pos_hint: {"center_x": 0.5, "center_y": 0.05}
+            size_hint: 0.7, None
+            height: "35dp"
+            text: "[color=#1864af]Continue[/color]"
+            markup: True
+            font_name: root.font
+            background_color: "#00101055"
+            on_release:
+                root.load_config()
+                root.manager.transition = FadeTransition(duration=0.09)
+                root.manager.current = 'MainMenu'
+            canvas:
+                Color:
+                    group: "outline-color"
+                    rgba: 0, .110, .175, 1
+                Line:
+                    width: 1.1
+                    rounded_rectangle:
+                        self.x, self.y, self.width, self.height, 5, 5, 5, 5, self.height
+
+        ImageButton:
+            size_hint: 1, 0.6
+            pos_hint: {"center_x": 0.5, "center_y": 0.9}
+            source: "Assets/map.png"
+
+        ImageButton:
+            size_hint: 0.2, 0.1
+            pos_hint: {"center_x": 0.5, "center_y": 0.65}
+            source: "Data/icon.png"
+
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.5, "center_y": 0.58}
+            text: "V2Paste"
+            font_size: "24sp"
+            color: "#1864af"
+            font_name: root.font
+
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.5, "center_y": 0.54}
+            text: "Version 3.0.0"
+            font_size: "18sp"
+            color: "#ffffff55"
+            font_name: root.font
+
+        ImageButton:
+            size_hint: 0.2, 0.1
+            pos_hint: {"center_x": 0.7, "center_y": 0.3}
+            source: "Assets/telegram.png"
+            on_release:
+                root.open_url(pf="Telegram")
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.7, "center_y": 0.25}
+            text: "Channel"
+            font_size: "12sp"
+            color: "#aaaaaa"
+            font_name: root.font
+
+        ImageButton:
+            size_hint: 0.2, 0.1
+            pos_hint: {"center_x": 0.3, "center_y": 0.3}
+            source: "Assets/source.png"
+            on_release:
+                root.open_url(pf="Source")
+        Label:
+            size_hint: 1, 0.1
+            pos_hint: {"center_x": 0.3, "center_y": 0.25}
+            text: "Source"
+            font_size: "12sp"
+            color: "#aaaaaa"
+            font_name: root.font
