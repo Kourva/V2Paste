@@ -1,77 +1,56 @@
 #!/usr/bin/env python3
 
+# V2Paste powered by Kourva
+# Version 3.0.0
 
-#  Author  : Kourva
-#  Github  : https://github.com/kourva/V2Paste
-#  Version : 1.3
-#  About   : Create Vless/Vmess proxies via given config with this simple app
-#
-#  Changes:
-#          + Bug fixes
-#          + Icons changed
-#          + New background
-
-# All imported Libraries
-# Built-in modules for basic stuff
-import sys
-import json
-import uuid
-import base64
-import random
-import webbrowser
-
-# Plyer modules: for android functionality
-from plyer import notification
-from plyer import vibrator
+import webbrowser, random, uuid, json, base64, urllib.parse
+from plyer import vibrator, notification
+from threading import Thread
 from plyer.utils import platform
-
-# Kicy modules: for the app
-from kivy.app import App
-from kivy.lang import Builder
-from kivy.uix.label import Label
-from kivy.uix.image import Image
-from kivy.uix.button import Button
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.textinput import TextInput
 from kivy.core.clipboard import Clipboard
-from kivy.properties import ObjectProperty
-from kivy.graphics import Color, Rectangle
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.floatlayout import FloatLayout
+from kivy.core.window import Window
+from kivy.properties import ListProperty, BooleanProperty
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.app import App 
+from kivy.factory import Factory
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.uix.actionbar import *
+from kivy.clock import Clock
+from kivy.lang import Builder
+from kivy.uix.popup import Popup
+from kivy.core.text import LabelBase
+from kivy.uix.label import Label
+from kivy.uix.slider import Slider
+from kivy.uix.image import Image
+from kivy.uix.button import Button, ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
+from kivy.uix.textinput import TextInput
+from kivy.uix.gridlayout import GridLayout
+from kivy.graphics import RoundedRectangle, Color, Line
+from kivy.uix.floatlayout import FloatLayout
+from kivy.network.urlrequest import UrlRequest
+from kivy.uix.tabbedpanel import TabbedPanel
 
+for filename in ["CloneMenu", "DecodeMenu", "MainMenu", "Settings", "StartMenu"]:
+    Builder.load_file("Scripts/%s.kv" % filename)
 
-# KV config files
-# All extra kivy files to include
-# Main menu screen
-# Settings screen
-# Decode menu screen
-# Clone menu screen
-for Sources in ["main.kv", "settings.kv", "decode.kv", "clone.kv"]:
-    with open("Sources/%s" % Sources, "r") as kv:
-        Builder.load_string(kv.read())
-
-
-# ImageButton
-# This is for clickable image buttons
 class ImageButton(ButtonBehavior, Image):
     def on_press(self):
         pass
 
+class StartMenu(Screen):
 
-# StartMenu screen
-# All needed functions for main menu
-class MainMenuScreen(Screen):
-    # Path to font & background
-    font = "Sources/Assets/header.otf"
-    background = "Sources/Assets/background.png"
+    font = "Assets/font.ttf"
 
-    # Load config from config file: so it will save previous config.
+    def open_url(self, pf):
+        url = (
+            "https://t.me/V2Paste"
+            if pf == "Telegram"
+            else "https://github.com/Kourva/V2Paste"
+        )
+        webbrowser.open(url)
+
     def load_config(self):
-        # Uses get_screen to get IDs from another class
         worker = self.manager.get_screen("Settings").ids.CloudFlare
         address = self.manager.get_screen("Settings").ids.IP_address
         port = self.manager.get_screen("Settings").ids.Port
@@ -80,7 +59,6 @@ class MainMenuScreen(Screen):
         pathvmess = self.manager.get_screen("Settings").ids.Pathvmess
         pathvless = self.manager.get_screen("Settings").ids.Pathvless
 
-        # Loads config file. if face any problem, resets it.
         with open("Data/config.conf", "r") as data:
             lines = data.readlines()
             try:
@@ -92,242 +70,263 @@ class MainMenuScreen(Screen):
                 pathvmess._set_text(lines[5].split("\n")[0])
                 pathvless._set_text(lines[6].split("\n")[0])
 
-            # If any error, let empty
             except IndexError:
-                worker = ""
-                address = ""
-                port = ""
-                uuid = ""
-                remark = ""
-                pathvmess = ""
-                pathvless = ""
+                worker._set_text("")
+                address._set_text("")
+                port._set_text("")
+                uuid._set_text("")
+                remark._set_text("")
+                pathvmess._set_text("")
+                pathvless._set_text("")
 
-    # Vless/Vmess generator will generate 2 vless and vmess proxies
-    def generate(self, output) -> None:
-        # Uses get_screen to get IDs from another class
-        worker = self.manager.get_screen("Settings").ids.CloudFlare.text.strip()
-        address = self.manager.get_screen("Settings").ids.IP_address.text.strip()
-        port = self.manager.get_screen("Settings").ids.Port.text.strip()
-        uuid = self.manager.get_screen("Settings").ids.UUID_input.text.strip()
-        remark = self.manager.get_screen("Settings").ids.Remark.text.strip()
-        pathvless = self.manager.get_screen("Settings").ids.Pathvless.text.strip()
-        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess.text.strip()
+class MainMenu(Screen):
 
-        # Send error notification if any field is empty
-        if (
-            worker == ""
-            or address == ""
-            or port == ""
-            or uuid == ""
-            or remark == ""
-            or pathvmess == ""
-            or pathvless == ""
-        ):
+    font = "Assets/font.ttf"
+
+    def show_exit_popup(self, *args):
+        popup = Factory.ExitPopup().open()
+        try:
+            vibrator.vibrate(0.1)
+        except:
+            pass
+
+    def Show_Qrcode_popup(self, *args):
+        try:
             try:
-                vibrator.vibrate(0.3)
+                vibrator.vibrate(0.1)
             except:
                 pass
-
-            title = "Error"
-            message = "Fill the requirements"
-            ticker = "New message"
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Wait until QRcode is being generated",
+                "ticker": "New message",
                 "toast": True,
-                "app_icon": "Data/notification.png",
+                "app_icon": "Data/icon.png",
             }
             notification.notify(**kwargs)
 
-        else:
-            # Vless
-            vless_url = f"vless://{uuid}@{address}:{port}?encryption=none&security=tls&sni={worker}&alpn=http%2F1.1&type=ws&host={worker}&path=/{pathvless}#{remark}"
+            qrtext = self.manager.get_screen("MainMenu").ids.Proxy_Output.text.strip()
+            en_qrtext = urllib.parse.quote(qrtext)
+            
+            url = f"https://api.qrserver.com/v1/create-qr-code/?data={en_qrtext}&size=500x500"
 
-            # Vmess
-            vmess_url = {
-                "v": "2",
-                "ps": remark,
-                "add": address,
-                "port": port,
-                "id": uuid,
-                "aid": "0",
-                "scy": "auto",
-                "net": "ws",
-                "type": "none",
-                "host": worker,
-                "path": pathvmess,
-                "tls": "tls",
-                "alpn": "http/1.1",
-            }
-            message = str(vmess_url).encode("ascii")
-            base64_bytes = base64.b64encode(message).decode("ascii")
-            output._set_text("vmess://" + base64_bytes + "\n\n" + vless_url)
+            Clock.start_clock()
+            req1 = UrlRequest(url, timeout=5)
+            while not req1.is_finished:
+                Clock.tick()
+            Clock.stop_clock()
 
-    # Vless/Vmess generator_20 will generate 20 vmess vless proxies
-    def generate_20(self, output) -> None:
-        # Uses get_screen to get IDs from another class
-        worker = self.manager.get_screen("Settings").ids.CloudFlare.text.strip()
-        address = self.manager.get_screen("Settings").ids.IP_address.text.strip()
-        port = self.manager.get_screen("Settings").ids.Port.text.strip()
-        uuid = self.manager.get_screen("Settings").ids.UUID_input.text.strip()
-        remark = self.manager.get_screen("Settings").ids.Remark.text.strip()
-        pathvless = self.manager.get_screen("Settings").ids.Pathvless.text.strip()
-        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess.text.strip()
+            result = req1.result
+            with open("Data/qrcode.png", "wb") as data:
+                data.write(result)
 
-        # Send error notification if any field is empty
-        if (
-            worker == ""
-            or address == ""
-            or port == ""
-            or uuid == ""
-            or remark == ""
-            or pathvmess == ""
-            or pathvless == ""
-        ):
+            popup = Factory.QRcodePopup()
+            qrcode_id = popup.ids.Proxy_QRcode
+            qrcode_id.source = "Data/qrcode.png"
+            popup.open()
+
+        except Exception as e:
+            print(e)
             try:
-                vibrator.vibrate(0.3)
+                vibrator.vibrate(0.1)
             except:
                 pass
-
-            title = "Error"
-            message = "Fill the requirements"
-            ticker = "New message"
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Error while generating QRcode",
+                "ticker": "New message",
                 "toast": True,
-                "app_icon": "Data/notification.png",
+                "app_icon": "Data/icon.png",
             }
             notification.notify(**kwargs)
 
-        else:
-            generated_proxies = []
-            with open("Data/servers.txt", "r") as data:
-                servers = data.readlines()
-                random_servers = [
-                    random.choice(servers).split("\n")[0] for _ in range(10)
-                ]
+    def load_config(self):
+        worker = self.manager.get_screen("Settings").ids.CloudFlare
+        address = self.manager.get_screen("Settings").ids.IP_address
+        port = self.manager.get_screen("Settings").ids.Port
+        uuid = self.manager.get_screen("Settings").ids.UUID_input
+        remark = self.manager.get_screen("Settings").ids.Remark
+        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess
+        pathvless = self.manager.get_screen("Settings").ids.Pathvless
 
-                for index, server in enumerate(random_servers, start=1):
-                    # Vless
-                    vless_url = f"vless://{uuid}@{server}:{port}?encryption=none&security=tls&sni={worker}&alpn=http%2F1.1&type=ws&host={worker}&path=/{pathvless}#{remark + '-vless' + str(index)}"
+        with open("Data/config.conf", "r") as data:
+            lines = data.readlines()
+            try:
+                worker._set_text(lines[0].split("\n")[0])
+                address._set_text(lines[1].split("\n")[0])
+                port._set_text(lines[2].split("\n")[0])
+                uuid._set_text(lines[3].split("\n")[0])
+                remark._set_text(lines[4].split("\n")[0])
+                pathvmess._set_text(lines[5].split("\n")[0])
+                pathvless._set_text(lines[6].split("\n")[0])
 
-                    # Vmess
-                    vmess_url = {
-                        "v": "2",
-                        "ps": remark + "-vmess" + str(index),
-                        "add": server,
-                        "port": port,
-                        "id": uuid,
-                        "aid": "0",
-                        "scy": "auto",
-                        "net": "ws",
-                        "type": "none",
-                        "host": worker,
-                        "path": pathvmess,
-                        "tls": "tls",
-                        "alpn": "http/1.1",
-                    }
-                    message = str(vmess_url).encode("ascii")
-                    base64_bytes = base64.b64encode(message).decode("ascii")
-                    generated_proxies.append(vless_url + "\n\n")
-                    generated_proxies.append("vmess://" + base64_bytes + "\n\n")
-
-                result = "".join(generated_proxies)
-                Clipboard.copy(result)
-                output._set_text(
-                    "20 Vless/Vmess proxies generated copied to clipboard.\n\nEnjoy the freedom ;]"
-                )
-                title = "Generator"
-                message = "20 Vless & Vmess proxies Generated."
-                ticker = "New message"
+            except IndexError:
+                try:
+                    vibrator.vibrate(0.1)
+                except:
+                    pass
                 kwargs = {
-                    "title": title,
-                    "message": message,
-                    "ticker": ticker,
-                    "app_name": "V2Paste",
-                    "app_icon": "Data/notification.png",
+                    "title": "Notification",
+                    "message": "Can't load data",
+                    "ticker": "New message",
+                    "toast": True,
+                    "app_icon": "Data/icon.png",
                 }
                 notification.notify(**kwargs)
 
-    # Copies the Vless/Vmess proxies to Clipboard & send notification
-    def copy_output(self, output):
-        Clipboard.copy(output.text)
-        title = "Copied"
-        message = "Proxies Copied"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-            "app_icon": "Data/notification.png",
-        }
-        notification.notify(**kwargs)
+                worker._set_text("")
+                address._set_text("")
+                port._set_text("")
+                uuid._set_text("")
+                remark._set_text("")
+                pathvmess._set_text("")
+                pathvless._set_text("")
+    
+    def generate_vmess(self):
+        worker = self.manager.get_screen("Settings").ids.CloudFlare.text.strip()
+        address = self.manager.get_screen("Settings").ids.IP_address.text.strip()
+        port = self.manager.get_screen("Settings").ids.Port.text.strip()
+        uuid = self.manager.get_screen("Settings").ids.UUID_input.text.strip()
+        remark = self.manager.get_screen("Settings").ids.Remark.text.strip()
+        pathvless = self.manager.get_screen("Settings").ids.Pathvless.text.strip()
+        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess.text.strip() 
 
-    # Resets output text
-    def reset_output(self, output):
-        output._set_text("")
+        if (
+            worker == ""
+            or address == ""
+            or port == ""
+            or uuid == ""
+            or remark == ""
+            or pathvmess == ""
+            or pathvless == ""
+        ):
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                    "title": "Notification",
+                    "message": "Not enough data",
+                    "ticker": "New message",
+                    "toast": True,
+                    "app_icon": "Data/icon.png",
+                }
+            notification.notify(**kwargs)
+            return
 
-    # Exit the app
-    def exit_app(self):
-        sys.exit()
+        vmess_url = {
+            "v": "2",
+            "ps": remark,
+            "add": address,
+            "port": port,
+            "id": uuid,
+            "aid": "0",
+            "scy": "auto",
+            "net": "ws",
+            "type": "none",
+            "host": worker,
+            "path": pathvmess,
+            "tls": "tls",
+            "alpn": "http/1.1",
+            }
+        vmess_url_str = 'vmess://' + base64.urlsafe_b64encode(json.dumps(vmess_url).encode('utf-8')).decode('utf-8')
+        self.manager.get_screen("MainMenu").ids.Proxy_Output.text = vmess_url_str + "\n\n"
 
-    # Opens GitHub
-    def open_github(self):
+    def generate_vless(self):
+        worker = self.manager.get_screen("Settings").ids.CloudFlare.text.strip()
+        address = self.manager.get_screen("Settings").ids.IP_address.text.strip()
+        port = self.manager.get_screen("Settings").ids.Port.text.strip()
+        uuid = self.manager.get_screen("Settings").ids.UUID_input.text.strip()
+        remark = self.manager.get_screen("Settings").ids.Remark.text.strip()
+        pathvless = self.manager.get_screen("Settings").ids.Pathvless.text.strip()
+        pathvmess = self.manager.get_screen("Settings").ids.Pathvmess.text.strip() 
+
+        if (
+            worker == ""
+            or address == ""
+            or port == ""
+            or uuid == ""
+            or remark == ""
+            or pathvmess == ""
+            or pathvless == ""
+        ):
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Notification",
+                "message": "Not enough data",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            }
+            notification.notify(**kwargs)
+            return
+
+        vless_url = f"vless://{uuid}@{address}:{port}?encryption=none&security=tls&sni={worker}&alpn=http%2F1.1&type=ws&host={worker}&path=/{pathvless}#{remark}"
+        self.manager.get_screen("MainMenu").ids.Proxy_Output.text = vless_url + "\n\n"
+
+    def copy_to_clipboard(self, Output):
+        try:
+            Clipboard.copy(Output.text)
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Notification",
+                "message": "Output copied",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            }
+            notification.notify(**kwargs)
+        except:
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Notification",
+                "message": "Error while copying!",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            }
+            notification.notify(**kwargs)
+
+class Settings(Screen):
+
+    font = "Assets/font.ttf"
+
+    def generate_string(*widgets):
+        vowels = "aeiou"
+        consonants = "bcdfghjklmnpqrstvwxyz"
+        for w in widgets:
+            w.text = "".join(
+                random.choice(consonants if i % 2 == 0 else vowels) for i in range(8)
+            ).capitalize()
+
+    def generate_uuid(self, uuid_widget):
         try:
             vibrator.vibrate(0.1)
         except:
             pass
-        webbrowser.open("https://github.com/Kourva")
+        uuid_widget.text = str(uuid.uuid4()).upper()
 
-    # Opens Telegram
-    def open_telegram(self):
-        try:
-            vibrator.vibrate(0.1)
-        except:
-            pass
-        webbrowser.open("https://t.me/V2Paste")
+    def get_ip_port(self, IP_address, Port):
+        with open("Data/servers.txt", "r") as data:
+            servers = data.readlines()
+            IP_address._set_text(random.choice(servers).split("\n")[0])
+            Port._set_text("443")
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
 
-    # Opens Source Code
-    def open_source(self):
-        try:
-            vibrator.vibrate(0.1)
-        except:
-            pass
-        webbrowser.open("https://github.com/Kourva/V2Paste")
-
-
-# Settings screen
-# All needed functions for settings menu
-class SettingsScreen(Screen):
-    # Path to font background
-    font = "Sources/Assets/header.otf"
-    background = "Sources/Assets/background.png"
-
-    # Resets settings & Sends notification
-    def reset_settings(self, *args):
-        for item in args:
-            item._set_text("")
-
-        title = "Reset"
-        message = "Data reset"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-            "app_icon": "Data/notification.png",
-        }
-        notification.notify(**kwargs)
-
-    # Saves configs so don't need to fill them again
     def save_config(self, *args):
         with open("Data/config.conf", "w") as data:
-            # Tries to save config and reset them when facing error
             try:
                 data.write(
                     f"""{args[0].text}
@@ -338,273 +337,163 @@ class SettingsScreen(Screen):
 {args[5].text}
 {args[6].text}"""
                 )
-
-                # Sends notification
-                title = "Saved"
-                message = "Data saved!"
-                ticker = "New message"
+                try:
+                    vibrator.vibrate(0.1)
+                except:
+                    pass
                 kwargs = {
-                    "title": title,
-                    "message": message,
-                    "ticker": ticker,
+                    "title": "Notification",
+                    "message": "Data saved",
+                    "ticker": "New message",
                     "toast": True,
-                    "app_icon": "Data/notification.png",
+                    "app_icon": "Data/icon.png",
                 }
                 notification.notify(**kwargs)
 
             except IndexError:
-                worker = ""
-                address = ""
-                port = ""
-                uuid = ""
-                remark = ""
-                pathvmess = ""
-                pathvless = ""
+                pass
 
-    # Simple notification for fun
-    def do_game(self):
-        try:
-            vibrator.vibrate(0.1)
-            time.sleep(0.3)
-            vibrator.vibrate(0.1)
-        except:
-            pass
+    def reset_config(self, *args):
+        for arg in args:
+            arg._set_text("")
 
-        # Sends notification
-        title = "Saved"
-        message = "¯\_(ツ)_/¯"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-            "app_icon": "Data/notification.png",
-        }
-        notification.notify(**kwargs)
-
-    # Generate Path name for vless and vmess
-    def generate_path(self, Pathvmess, Pathvless):
-        possibles = "abcedfghigklmnopqrstuvwxyw"
-        generated = "".join(random.choices(possibles, k=5))
-        Pathvless._set_text(generated + "-vless")
-        Pathvmess._set_text(generated + "-vmess")
-
-    # Generates UUID version 4. If you don't have one
-    def generate_uuid(self, UUID_input):
-        generated_uuid = uuid.uuid4()
-        UUID_input._set_text(str(generated_uuid))
-
-    # Get servers from servers file (about 27000 IPs)
-    def get_server(self, IP_address, Port):
-        with open("Data/servers.txt", "r") as data:
-            servers = data.readlines()
-            IP_address._set_text(random.choice(servers).split("\n")[0])
-            Port._set_text("443")
-
-        try:
-            vibrator.vibrate(0.1)
-        except:
-            pass
-
-        # Sends notification
-        title = "Saved"
-        message = "Got server"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-            "app_icon": "Data/notification.png",
-        }
-
-
-# Decode menu screen
-# All needed functions for decode menu
-class DecodeScreen(Screen):
-    # Path to font & background
-    font = "Sources/Assets/header.otf"
-    background = "Sources/Assets/background.png"
-
-    # Simple notification for fun
-    def do_game(self):
-        try:
-            vibrator.vibrate(0.1)
-            time.sleep(0.3)
-            vibrator.vibrate(0.1)
-        except:
-            pass
-
-        # Sends notification
-        title = "Saved"
-        message = "¯\_(ツ)_/¯"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-            "app_icon": "Data/notification.png",
-        }
-        notification.notify(**kwargs)
-
-    # Decode vmess proxy and extract it's config
-    def decode_vmess(self, vmessurl, vmessdecoded):
-        if vmessurl == "":
             try:
                 vibrator.vibrate(0.1)
             except:
                 pass
+        kwargs = {
+            "title": "Notification",
+            "message": "Config reset",
+            "ticker": "New message",
+            "toast": True,
+            "app_icon": "Data/icon.png",
+        }
+        notification.notify(**kwargs)
 
-            # Sends notification
-            title = "Saved"
-            message = "Input is empty"
-            ticker = "New message"
+class DecodeMenu(Screen):
+
+    font = "Assets/font.ttf"
+
+    def change_mode(self, mode, inpt):
+        try:
+            vibrator.vibrate(0.1)
+        except:
+            pass
+        kwargs = {
+            "title": "Notification",
+            "message": "There is no other mods yet!",
+            "ticker": "New message",
+            "toast": True,
+            "app_icon": "Data/icon.png",
+        }
+        notification.notify(**kwargs)
+        return
+
+    def Decode(self, mode, Input, Output):
+        if Input.text == "":
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Input can't be empty",
+                "ticker": "New message",
                 "toast": True,
-                "app_icon": "Data/notification.png",
-            }
+                "app_icon": "Data/icon.png",
+            }   
             notification.notify(**kwargs)
             return
+        
+        if mode.text == 'Current Mode: [color=#ffff00]Vmess[/color]':
+            try:
+                encoded_data = Input.text if not "vmess://" in Input.text else Input.text.split("vmess://")[1]
+                output = json.loads(base64.b64decode(encoded_data).decode('utf-8').replace("'", "\""))
+                Output.text = "Here is your output for Vmess URL:\n\n" + str(json.dumps(output, indent=1))
+            except:
+                try:
+                    vibrator.vibrate(0.1)
+                except:
+                    pass
+                kwargs = {
+                    "title": "Notification",
+                    "message": "Input seems to be wrong",
+                    "ticker": "New message",
+                    "toast": True,
+                    "app_icon": "Data/icon.png",
+                } 
+                notification.notify(**kwargs)
+                return
 
+    def copy_to_clipboard(self, Output):
         try:
-            # Gets message
-            target = vmessurl.text.split("vmess://")[1].strip()
-
-            # Decodes message
-            tempvar = target.encode("ascii")
-            message = base64.b64decode(tempvar)
-            configs = message.decode("ascii")
-
-            # Converts to json
-            ugly_json = configs.replace("'", '"')
-            parsed_json = json.loads(ugly_json)
-            pretty_json = json.dumps(parsed_json, indent=4)
-
-            # Shows json config
-            vmessdecoded.text = str(pretty_json)
-
+            Clipboard.copy(Output.text)
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Notification",
+                "message": "Output copied",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            }
+            notification.notify(**kwargs)
         except:
             try:
                 vibrator.vibrate(0.1)
             except:
                 pass
-
-            # Sends notification
-            title = "Saved"
-            message = "URL is incorrect"
-            ticker = "New message"
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Error while copying!",
+                "ticker": "New message",
                 "toast": True,
-                "app_icon": "Data/notification.png",
+                "app_icon": "Data/icon.png",
             }
             notification.notify(**kwargs)
 
-    # Copies config to clipboard
-    def copy_config(self, vmessdecoded):
-        Clipboard.copy(vmessdecoded.text)
-        title = "Copied"
-        message = "Config Copied"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-        }
-        notification.notify(**kwargs)
+class CloneMenu(Screen):
 
+    font = "Assets/font.ttf"
 
-# Clone menu screen
-# All needed functions for clone menu
-class CloneScreen(Screen):
-    # Path to font & background
-    font = "Sources/Assets/header.otf"
-    background = "Sources/Assets/background.png"
-
-    # Mode changer
-    def changer(self, ModeLabel, cloneurl, CloneButton, outputcloned):
-        # Mode label text
-        if ModeLabel.text == "[b][color=000000]Mode : Vless[/color][/b]":
-            if not cloneurl.text == "":
-                cloneurl._set_text("")
-            ModeLabel.text = "[b][color=000000]Mode : Vmess[/color][/b]"
-            cloneurl.hint_text = cloneurl.hint_text.replace("Vless", "Vmess")
-            CloneButton.text = "Clone Vmess proxy"
-            outputcloned.text = "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
-        else:
-            if not cloneurl.text == "":
-                cloneurl._set_text("")
-            ModeLabel.text = "[b][color=000000]Mode : Vless[/color][/b]"
-            cloneurl.hint_text = cloneurl.hint_text.replace("Vmess", "Vless")
-            CloneButton.text = "Clone Vless proxy"
-            outputcloned.text = "[b]Output of cloned proxies here...\nThey will automatically copied to your clipboard.[/b]"
-
-    # Simple notification for fun
-    def do_game(self):
+    def clone_vmess(self, Input, Output, Clone_Nums):
         try:
-            vibrator.vibrate(0.1)
-            time.sleep(0.3)
-            vibrator.vibrate(0.1)
+            if not Input.text.startswith("vmess://"):
+                raise
         except:
-            pass
-
-        # Sends notification
-        title = "Saved"
-        message = "¯\_(ツ)_/¯"
-        ticker = "New message"
-        kwargs = {
-            "title": title,
-            "message": message,
-            "ticker": ticker,
-            "toast": True,
-            "app_icon": "Data/notification.png",
-        }
-        notification.notify(**kwargs)
-
-    # Clone Vmess URL
-    def clone_vmess(self, cloneurl, outputcloned):
-        if cloneurl.text == "":
-            title = "Copied"
-            message = "incorrect URL"
-            ticker = "New message"
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Not a valid url",
+                "ticker": "New message",
                 "toast": True,
+                "app_icon": "Data/icon.png",
             }
             notification.notify(**kwargs)
             return
 
         try:
-            target = cloneurl.text.split("vmess://")[1].strip()
-
-            original_message = target.encode("ascii")
-            base64_message = base64.b64decode(original_message)
-            decoded_message = base64_message.decode("ascii")
-            config_message = json.loads(decoded_message.replace("'", '"'))
+            encoded_data = Input.text.split("vmess://")[1].strip()
+            output = json.loads(base64.b64decode(encoded_data).decode('utf-8').replace("'", "\""))
 
             ipaddr, port, remark = (
-                config_message["add"],
-                config_message["port"],
-                config_message["ps"],
+                output["add"],
+                output["port"],
+                output["ps"],
             )
 
             with open("Data/servers.txt", "r") as file:
                 all_servers = file.readlines()
-                iplist = [random.choice(all_servers).split("\n")[0] for _ in range(20)]
+                iplist = [random.choice(all_servers).split("\n")[0] for _ in range(Clone_Nums.value)]
 
             clones = []
             for index, server in enumerate(iplist, start=1):
-                temp = config_message
+                temp = output
                 temp["add"] = server
                 temp["port"] = "443"
                 temp["ps"] = remark + "-" + str(index)
@@ -615,61 +504,49 @@ class CloneScreen(Screen):
                 clones.append(result)
 
             result = "".join(clones)
-            outputcloned.text = result
-            Clipboard.copy(result)
-
-            title = "Generator"
-            message = "20 Vmess proxy cloned to clipboard."
-            ticker = "New message"
+            Output.text = result
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
-                "app_name": "V2Paste",
-                "app_icon": "Data/notification.png",
-            }
+                "title": "Notification",
+                "message": f"{Clone_Nums.value} Proxies generated",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            }    
             notification.notify(**kwargs)
 
         except:
-            title = "Error"
-            message = "incorrect URL"
-            ticker = "New message"
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Error while cloning!",
+                "ticker": "New message",
                 "toast": True,
-            }
-            notification.notify(**kwargs)
-
-    # clone Vless URL
-    def clone_vless(self, cloneurl, outputcloned):
-        if cloneurl.text == "":
-            title = "Error"
-            message = "incorrect URL"
-            ticker = "New message"
-            kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
-                "toast": True,
-            }
+                "app_icon": "Data/icon.png",
+            }    
             notification.notify(**kwargs)
             return
 
+    def clone_vless(self, Input, Output, Clone_Nums):
         try:
-            target = cloneurl.text.split("@")[1].split("?")[0]
+            target = Input.text.split("@")[1].split("?")[0]
             ipaddr, port = target.split(":")
-            remark = cloneurl.text.strip().split("#")[1]
+            remark = Input.text.strip().split("#")[1]
 
             with open("Data/servers.txt", "r") as file:
                 all_servers = file.readlines()
-                iplist = [random.choice(all_servers).split("\n")[0] for _ in range(20)]
+                iplist = [random.choice(all_servers).split("\n")[0] for _ in range(Clone_Nums.value)]
 
             clones = []
             for index, server in enumerate(iplist, start=1):
                 tempvar = (
-                    cloneurl.text.strip()
+                    Input.text.strip()
                     .replace(ipaddr, server)
                     .replace(port, "443")
                     .replace(remark, remark + "-" + str(index) + "\n\n")
@@ -677,63 +554,86 @@ class CloneScreen(Screen):
                 clones.append(tempvar)
 
             result = "".join(clones)
-            outputcloned.text = result
-            Clipboard.copy(result)
-
-            title = "Generator"
-            message = "20 Vmess proxy cloned to clipboard."
-            ticker = "New message"
+            Output.text = result
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
-                "app_name": "V2Paste",
-                "app_icon": "Data/notification.png",
-            }
+                "title": "Notification",
+                "message": f"{Clone_Nums.value} Proxies generated",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            } 
             notification.notify(**kwargs)
 
         except:
-            title = "Error"
-            message = "incorrect URL"
-            ticker = "New message"
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
             kwargs = {
-                "title": title,
-                "message": message,
-                "ticker": ticker,
+                "title": "Notification",
+                "message": "Error while cloning!",
+                "ticker": "New message",
                 "toast": True,
+                "app_icon": "Data/icon.png",
+            } 
+            notification.notify(**kwargs)
+            return
+
+    def copy_to_clipboard(self, Output):
+        try:
+            Clipboard.copy(Output.text)
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Notification",
+                "message": "Output copied",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
+            }
+            notification.notify(**kwargs)
+        except:
+            try:
+                vibrator.vibrate(0.1)
+            except:
+                pass
+            kwargs = {
+                "title": "Notification",
+                "message": "Error while copying!",
+                "ticker": "New message",
+                "toast": True,
+                "app_icon": "Data/icon.png",
             }
             notification.notify(**kwargs)
 
-
-# Main class of the app
 class V2PasteApp(App):
-    # Build method
     def build(self):
-        # Root screen
+
         root = ScreenManager()
 
-        # Main menu screen
-        self.MainMenuScreen = MainMenuScreen(name="MainMenu")
-        root.add_widget(self.MainMenuScreen)
+        self.StartMenu = StartMenu(name="StartMenu")
+        root.add_widget(self.StartMenu)
 
-        # Decode menu screen
-        self.DecodeScreen = DecodeScreen(name="DecodeMenu")
-        root.add_widget(self.DecodeScreen)
+        self.CloneMenu = CloneMenu(name="CloneMenu")
+        root.add_widget(self.CloneMenu)
 
-        # Clone menu screen
-        self.CloneScreen = CloneScreen(name="CloneMenu")
-        root.add_widget(self.CloneScreen)
+        self.DecodeMenu = DecodeMenu(name="DecodeMenu")
+        root.add_widget(self.DecodeMenu)
 
-        # Settings menu screen
-        self.SettingsScreen = SettingsScreen(name="Settings")
-        root.add_widget(self.SettingsScreen)
+        self.MainMenu = MainMenu(name="MainMenu")
+        root.add_widget(self.MainMenu)
 
-        # Set current screen to main menu and return root
-        root.current = "MainMenu"
+        self.Settings = Settings(name="Settings")
+        root.add_widget(self.Settings)
+
+        root.current = "StartMenu"
         return root
 
-
-# Run App
-V2PasteApp().run()
-
-# EOF
+if __name__ == "__main__":
+    V2PasteApp().run()
