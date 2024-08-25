@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# V2Paste powered by kozyol
+# V2Paste powered by Kourva
 # Version 3.0.0
 
 import webbrowser, random, uuid, json, base64, urllib.parse
@@ -46,7 +46,7 @@ class StartMenu(Screen):
         url = (
             "https://t.me/V2Paste"
             if pf == "Telegram"
-            else "https://github.com/kozyol/V2Paste"
+            else "https://github.com/Kourva/V2Paste"
         )
         webbrowser.open(url)
 
