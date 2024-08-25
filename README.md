@@ -1,5 +1,5 @@
 <p>
-    <img align="left" src="https://github.com/kozyol/V2Paste/blob/main/Data/icon.png" width=140 height=140 />
+    <img align="left" src="https://github.com/Kourva/V2Paste/blob/main/Data/icon.png" width=140 height=140 />
     <h1> V2Paste </h1>
     <p><b> Multi-Tool V2ray proxy app for android.</b></p>
 </p>
@@ -15,10 +15,10 @@
 
 ### ▍Download 
 Feel free to download this app from releases page
-<br>Download: [V2Paste-1.2](https://github.com/kozyol/V2Paste/releases/tag/v3.0.0)
+<br>Download: [V2Paste-1.2](https://github.com/Kourva/V2Paste/releases/tag/v3.0.0)
 
 ### ▍Idea
-So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/kozyol/V2Paste/issues).
+So this app works online with public APIs. if you have any idea to add let me know in [Issues](https://github.com/Kourva/V2Paste/issues).
 
 ### ▍Guide
 If you have any question or help, check out our Telegram channel<br>
@@ -28,7 +28,7 @@ Link: [V2Paste Updates](https://t.me/V2Paste)
 #### First you need to install [python](https://www.python.org/) and [pip](https://pypi.org/project/pip/) from Official pages or Terminal
 #### ⒈ clone the reposytory
 ```bash
-git clone https://github.com/kozyol/V2Paste && cd V2Paste
+git clone https://github.com/Kourva/V2Paste && cd V2Paste
 ```
 #### ⒉ Navigate to V2Paste directory
 ```bash
@@ -139,7 +139,7 @@ buildozer android clean
 </p><br>
 
 ###### There is another tool for creating Vless proxies and some other stuff.
-###### Check it out: https://github.com/kozyol/V2rayDoprax
+###### Check it out: https://github.com/Kourva/V2rayDoprax
 
 
 # Thanks
